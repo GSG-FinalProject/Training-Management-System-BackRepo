@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using TMS.Domain.DTOs.Admin;
 
 namespace TMS.Api.Validator;
 

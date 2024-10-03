@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using TMS.Domain.Entities;
 
 namespace TMS.Application.Abstracts.IAuthService;
 public interface IUserManager

@@ -1,3 +1,7 @@
+using TMS.Api.Extensions;
+using TMS.Api.Middlewares;
+using TMS.Application.Extensions;
+using TMS.Infrastructure.Extensions;
 
 namespace TMS.Api;
 public class Program
@@ -6,28 +10,26 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
-        builder.Services.AddControllers();
-
+        builder.Services.AddEndpointsApiExplorer();
 
         builder.Services.AddApplicationDependencies()
                         .AddPresentationDependencies(builder.Configuration)
-                        .AddInfrastructureDependencies(builder.Configuration).AddSwaggerDocumentation();
-
-        builder.Services.AddEndpointsApiExplorer();
-        builder.Services.AddSwaggerGen();
+                        .AddInfrastructureDependencies(builder.Configuration)
+                        .AddSwaggerDocumentation().AddCorsPolicy();
 
         var app = builder.Build();
 
         if (app.Environment.IsDevelopment())
         {
-            app.UseSwagger();
-            app.UseSwaggerUI();
+            app.UseSwaggerDocumentation();
         }
 
+        app.UseCors();
+        app.UseMiddleware<GlobalExceptionHandling>();
         app.UseHttpsRedirection();
-
-        app.UseAuthorization();
         app.UseAuthentication();
+        app.UseAuthorization();
+
         app.MapControllers();
 
         app.Run();

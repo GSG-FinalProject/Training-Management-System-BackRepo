@@ -1,5 +1,11 @@
 ﻿using System.Data;
 using TMS.Application.Abstracts.IAuthService;
+using TMS.Domain.DTOs.Admin;
+using TMS.Domain.DTOs.Trainee;
+using TMS.Domain.DTOs.Trainer;
+using TMS.Domain.Entities;
+using TMS.Domain.Enums;
+using TMS.Domain.Interfaces.ILogger;
 
 namespace TMS.Application.Implementations;
 public class AuthService : IAuthService

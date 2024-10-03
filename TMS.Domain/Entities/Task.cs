@@ -5,6 +5,6 @@ public class Task
     public string Title { get; set; }
     public string Description { get; set; }
     public DateTime DueDate { get; set; }
-    public string TrainerId { get; set; }
-    public Trainer Trainer { get; set; }
+    public int CourseId { get; set; }
+    public List<Submission> Submissions { get; set; } = new List<Submission>();
 }

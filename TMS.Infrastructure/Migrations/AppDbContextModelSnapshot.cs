@@ -22,21 +22,6 @@ namespace TMS.Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("CourseTrainee", b =>
-                {
-                    b.Property<int>("CoursesId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("TraineesId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("CoursesId", "TraineesId");
-
-                    b.HasIndex("TraineesId");
-
-                    b.ToTable("CourseTrainee");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
@@ -221,6 +206,9 @@ namespace TMS.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("SubmissionId")
+                        .HasColumnType("int");
+
                     b.Property<int>("TaskId")
                         .HasColumnType("int");
 
@@ -243,6 +231,36 @@ namespace TMS.Infrastructure.Migrations
                     b.ToTable("Feedbacks", (string)null);
                 });
 
+            modelBuilder.Entity("TMS.Domain.Entities.Submission", b =>
+                {
+                    b.Property<int>("SubmissionId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SubmissionId"));
+
+                    b.Property<int>("AssignmentId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("SubmissionDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("TaskId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TraineeId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("SubmissionId");
+
+                    b.HasIndex("TaskId");
+
+                    b.HasIndex("TraineeId");
+
+                    b.ToTable("Submission");
+                });
+
             modelBuilder.Entity("TMS.Domain.Entities.Task", b =>
                 {
                     b.Property<int>("Id")
@@ -250,6 +268,9 @@ namespace TMS.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CourseId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -262,13 +283,9 @@ namespace TMS.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("TrainerId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("TrainerId");
+                    b.HasIndex("CourseId");
 
                     b.ToTable("Tasks", (string)null);
                 });
@@ -305,6 +322,9 @@ namespace TMS.Infrastructure.Migrations
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
                         .HasMaxLength(256)
@@ -376,18 +396,12 @@ namespace TMS.Infrastructure.Migrations
                 {
                     b.HasBaseType("TMS.Domain.Entities.User");
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
                     b.ToTable("Admins", (string)null);
                 });
 
             modelBuilder.Entity("TMS.Domain.Entities.Trainee", b =>
                 {
                     b.HasBaseType("TMS.Domain.Entities.User");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
 
                     b.Property<int>("TrainingHours")
                         .HasColumnType("int");
@@ -403,25 +417,7 @@ namespace TMS.Infrastructure.Migrations
                 {
                     b.HasBaseType("TMS.Domain.Entities.User");
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
                     b.ToTable("Trainers", (string)null);
-                });
-
-            modelBuilder.Entity("CourseTrainee", b =>
-                {
-                    b.HasOne("TMS.Domain.Entities.Course", null)
-                        .WithMany()
-                        .HasForeignKey("CoursesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("TMS.Domain.Entities.Trainee", null)
-                        .WithMany()
-                        .HasForeignKey("TraineesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -501,13 +497,13 @@ namespace TMS.Infrastructure.Migrations
                         .IsRequired();
 
                     b.HasOne("TMS.Domain.Entities.Trainee", "Trainee")
-                        .WithMany("Feedbacks")
+                        .WithMany()
                         .HasForeignKey("TraineeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("TMS.Domain.Entities.Trainer", "Trainer")
-                        .WithMany("Feedbacks")
+                        .WithMany()
                         .HasForeignKey("TrainerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -519,15 +515,26 @@ namespace TMS.Infrastructure.Migrations
                     b.Navigation("Trainer");
                 });
 
-            modelBuilder.Entity("TMS.Domain.Entities.Task", b =>
+            modelBuilder.Entity("TMS.Domain.Entities.Submission", b =>
                 {
-                    b.HasOne("TMS.Domain.Entities.Trainer", "Trainer")
-                        .WithMany("Tasks")
-                        .HasForeignKey("TrainerId")
+                    b.HasOne("TMS.Domain.Entities.Task", null)
+                        .WithMany("Submissions")
+                        .HasForeignKey("TaskId");
+
+                    b.HasOne("TMS.Domain.Entities.Trainee", null)
+                        .WithMany("Submissions")
+                        .HasForeignKey("TraineeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
 
-                    b.Navigation("Trainer");
+            modelBuilder.Entity("TMS.Domain.Entities.Task", b =>
+                {
+                    b.HasOne("TMS.Domain.Entities.Course", null)
+                        .WithMany("Assignments")
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("TMS.Domain.Entities.Admin", b =>
@@ -557,6 +564,16 @@ namespace TMS.Infrastructure.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("TMS.Domain.Entities.Course", b =>
+                {
+                    b.Navigation("Assignments");
+                });
+
+            modelBuilder.Entity("TMS.Domain.Entities.Task", b =>
+                {
+                    b.Navigation("Submissions");
+                });
+
             modelBuilder.Entity("TMS.Domain.Entities.TrainingField", b =>
                 {
                     b.Navigation("Courses");
@@ -564,16 +581,12 @@ namespace TMS.Infrastructure.Migrations
 
             modelBuilder.Entity("TMS.Domain.Entities.Trainee", b =>
                 {
-                    b.Navigation("Feedbacks");
+                    b.Navigation("Submissions");
                 });
 
             modelBuilder.Entity("TMS.Domain.Entities.Trainer", b =>
                 {
                     b.Navigation("Courses");
-
-                    b.Navigation("Feedbacks");
-
-                    b.Navigation("Tasks");
                 });
 #pragma warning restore 612, 618
         }

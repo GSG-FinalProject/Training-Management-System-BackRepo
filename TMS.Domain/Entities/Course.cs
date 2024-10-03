@@ -9,6 +9,6 @@ public class Course
     public string Url { get; set; }
     public string TrainerId { get; set; }
     public TrainingField TrainingField { get; set; }
-    public ICollection<Trainee> Trainees { get; set; }
+    public List<Task> Assignments { get; set; } = new List<Task>();
 
 }

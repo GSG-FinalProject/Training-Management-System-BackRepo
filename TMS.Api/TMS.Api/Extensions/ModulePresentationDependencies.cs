@@ -24,8 +24,8 @@ public static class ModulePresentationDependencies
         services.AddIdentity<User, IdentityRole>()
         .AddEntityFrameworkStores<AppDbContext>()
         .AddDefaultTokenProviders();
-        services.AddScoped<IResponseHandler, ResponseHandler>();
 
+        services.AddScoped<IResponseHandler, ResponseHandler>();
 
         services.AddScoped<IUserManager, UserManager>();
 

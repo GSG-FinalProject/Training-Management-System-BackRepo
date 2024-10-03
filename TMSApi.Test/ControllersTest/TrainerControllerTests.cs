@@ -7,6 +7,7 @@ using TMS.Api.Responses;
 using TMS.Domain.DTOs.Trainer;
 using TMS.Domain.Entities;
 using TMS.Domain.Interfaces.Persistence;
+using Task = System.Threading.Tasks.Task;
 
 namespace TMSApi.Test.ControllersTest;
 

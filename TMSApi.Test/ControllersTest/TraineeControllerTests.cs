@@ -7,6 +7,7 @@ using TMS.Api.Responses;
 using TMS.Domain.DTOs.Trainee;
 using TMS.Domain.Entities;
 using TMS.Domain.Interfaces.Persistence;
+using Task = System.Threading.Tasks.Task;
 
 namespace TMSApi.Test.ControllersTest;
 public class TraineeControllerTests
@@ -25,7 +26,7 @@ public class TraineeControllerTests
     }
 
     [Fact]
-    public async Task GetTraineeById_ShouldReturnSuccess_WhenTraineeExists()
+    public async System.Threading.Tasks.Task GetTraineeById_ShouldReturnSuccess_WhenTraineeExists()
     {
         // Arrange
         var traineeId = "1";

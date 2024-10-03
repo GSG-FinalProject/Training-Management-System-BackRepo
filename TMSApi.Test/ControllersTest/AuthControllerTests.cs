@@ -12,6 +12,7 @@ using TMS.Domain.Enums;
 using TMS.Domain.Interfaces.ILogger;
 using TMS.Domain.DTOs.Trainer;
 using Microsoft.EntityFrameworkCore;
+using Task = System.Threading.Tasks.Task;
 
 namespace TMSApi.Test.AuthControllerTest;
 public class AuthControllerTests
@@ -40,7 +41,7 @@ public class AuthControllerTests
     }
 
     [Fact]
-    public async Task RegisterAdmin_ShouldReturnSuccess_WhenAdminIsRegistered()
+    public async System.Threading.Tasks.Task RegisterAdmin_ShouldReturnSuccess_WhenAdminIsRegistered()
     {
         // Arrange
         var registerAdminDto = new RegisterAdminDto { Email = "admin@example.com", Password = "password123" };

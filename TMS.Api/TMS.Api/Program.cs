@@ -1,3 +1,4 @@
+using System.Globalization;
 using TMS.Api.Extensions;
 using TMS.Api.Middlewares;
 using TMS.Application.Extensions;
@@ -16,6 +17,10 @@ public class Program
                         .AddPresentationDependencies(builder.Configuration)
                         .AddInfrastructureDependencies(builder.Configuration)
                         .AddSwaggerDocumentation().AddCorsPolicy();
+
+        var cultureInfo = new CultureInfo("en-US");
+        CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
+        CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
 
         var app = builder.Build();
 

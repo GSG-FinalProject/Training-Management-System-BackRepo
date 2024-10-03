@@ -10,6 +10,7 @@ using TMS.Domain.DTOs.Trainer;
 using TMS.Domain.Entities;
 using TMS.Domain.Enums;
 using TMS.Domain.Interfaces.ILogger;
+using Task = System.Threading.Tasks.Task;
 
 namespace TMSApplication.Test.Services.Test;
 
@@ -29,7 +30,7 @@ public class AuthServiceTests
     }
 
     [Fact]
-    public async Task RegisterAdminAsync_ShouldReturnAdminResponseDto_WhenRegistrationSucceeds()
+    public async System.Threading.Tasks.Task RegisterAdminAsync_ShouldReturnAdminResponseDto_WhenRegistrationSucceeds()
     {
         // Arrange
         var registerAdminDto = new RegisterAdminDto
@@ -54,7 +55,7 @@ public class AuthServiceTests
     }
 
     [Fact]
-    public async Task RegisterAdminAsync_ShouldThrowException_WhenRegistrationFails()
+    public async System.Threading.Tasks.Task RegisterAdminAsync_ShouldThrowException_WhenRegistrationFails()
     {
         // Arrange
         var registerAdminDto = new RegisterAdminDto
@@ -70,7 +71,7 @@ public class AuthServiceTests
             .ReturnsAsync(IdentityResult.Failed(errors.Select(e => new IdentityError { Description = e }).ToArray()));
 
         // Act
-        Func<Task> act = async () => await _authService.RegisterAdminAsync(registerAdminDto);
+        Func<System.Threading.Tasks.Task> act = async () => await _authService.RegisterAdminAsync(registerAdminDto);
 
         // Assert
         await act.Should().ThrowAsync<Exception>()
@@ -78,7 +79,7 @@ public class AuthServiceTests
     }
 
     [Fact]
-    public async Task RegisterTrainerAsync_ShouldReturnTrainerResponseDto_WhenRegistrationSucceeds()
+    public async System.Threading.Tasks.Task RegisterTrainerAsync_ShouldReturnTrainerResponseDto_WhenRegistrationSucceeds()
     {
         // Arrange
         var registerTrainerDto = new RegisterTrainerDto
@@ -104,7 +105,7 @@ public class AuthServiceTests
     }
 
     [Fact]
-    public async Task RegisterTrainerAsync_ShouldThrowException_WhenRegistrationFails()
+    public async System.Threading.Tasks.Task RegisterTrainerAsync_ShouldThrowException_WhenRegistrationFails()
     {
         // Arrange
         var registerTrainerDto = new RegisterTrainerDto
@@ -120,7 +121,7 @@ public class AuthServiceTests
             .ReturnsAsync(IdentityResult.Failed(errors.Select(e => new IdentityError { Description = e }).ToArray()));
 
         // Act
-        Func<Task> act = async () => await _authService.RegisterTrainerAsync(registerTrainerDto);
+        Func<System.Threading.Tasks.Task> act = async () => await _authService.RegisterTrainerAsync(registerTrainerDto);
 
         // Assert
         await act.Should().ThrowAsync<Exception>()
@@ -157,7 +158,7 @@ public class AuthServiceTests
     }
 
     [Fact]
-    public async Task RegisterTraineeAsync_ShouldThrowException_WhenRegistrationFails()
+    public async System.Threading.Tasks.Task RegisterTraineeAsync_ShouldThrowException_WhenRegistrationFails()
     {
         // Arrange
         var registerTraineeDto = new RegisterTraineeDto

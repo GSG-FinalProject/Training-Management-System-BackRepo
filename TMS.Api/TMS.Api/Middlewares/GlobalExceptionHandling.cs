@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.Net;
 using System.Text.Json;
+using TMS.Domain.Exceptions;
 
 namespace TMS.Api.Middlewares;
 public class GlobalExceptionHandling

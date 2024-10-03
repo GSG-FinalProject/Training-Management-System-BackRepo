@@ -1,4 +1,6 @@
-﻿namespace TMS.Api.Logger;
+﻿using TMS.Domain.Interfaces.ILogger;
+
+namespace TMS.Api.Logger;
 public class Log : ILog
 {
     private const string ErrorLogType = "error";

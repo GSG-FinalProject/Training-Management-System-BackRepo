@@ -1,7 +1,18 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using System;
+using System.Text;
 using TMS.Api.Logger;
+using TMS.Api.Responses;
+using TMS.Application.Abstracts.IAuthService;
+using TMS.Application.Implementations;
+using TMS.Domain.Entities;
+using TMS.Domain.Interfaces.ILogger;
+using TMS.Domain.Interfaces.Persistence.Repositories;
+using TMS.Infrastructure.DbContexts;
+using TMS.Infrastructure.Repositories;
 
 namespace TMS.Api.Extensions;
 public static class ModulePresentationDependencies

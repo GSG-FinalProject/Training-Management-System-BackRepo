@@ -12,7 +12,7 @@ public static class SwaggerServiceExtensions
                 Title = "HotelBookingPlatform.API",
                 Version = "v1"
             });
-            c.EnableAnnotations();
+            //c.EnableAnnotations();
 
             c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
             {

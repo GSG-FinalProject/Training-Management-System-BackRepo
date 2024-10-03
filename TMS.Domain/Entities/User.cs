@@ -1,7 +1,5 @@
-﻿
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using TMS.Domain.Enums;
-
 namespace TMS.Domain.Entities;
 public class User : IdentityUser
 {

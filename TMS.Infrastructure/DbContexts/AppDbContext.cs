@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Reflection.Emit;
 using TMS.Domain.Entities;
 namespace TMS.Infrastructure.DbContexts;
 public class AppDbContext : IdentityDbContext<User>

@@ -3,13 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34330.188
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TMS.Api", "TMS.Api\TMS.Api.csproj", "{34BD0312-363F-44F1-B60F-EA3942A7AD35}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TMS.Api", "TMS.Api\TMS.Api.csproj", "{34BD0312-363F-44F1-B60F-EA3942A7AD35}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TMS.Application", "..\TMS.Application\TMS.Application.csproj", "{47409BCF-8CC3-48EE-B744-39E69F34A093}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TMS.Application", "..\TMS.Application\TMS.Application.csproj", "{47409BCF-8CC3-48EE-B744-39E69F34A093}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TMS.Domain", "..\TMS.Domain\TMS.Domain.csproj", "{D3DB3C3B-EBED-4B8F-8A25-AC86ED6208FB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TMS.Domain", "..\TMS.Domain\TMS.Domain.csproj", "{D3DB3C3B-EBED-4B8F-8A25-AC86ED6208FB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TMS.Infrastructure", "..\TMS.Infrastructure\TMS.Infrastructure.csproj", "{20D79B4B-B532-4E20-A322-ABC008BF5BEF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TMS.Infrastructure", "..\TMS.Infrastructure\TMS.Infrastructure.csproj", "{20D79B4B-B532-4E20-A322-ABC008BF5BEF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TMSApplication.Test", "..\TMSApplication.Test\TMSApplication.Test.csproj", "{5B6A6628-D4A6-4DC6-82D9-62A21FD66EA0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{20D79B4B-B532-4E20-A322-ABC008BF5BEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{20D79B4B-B532-4E20-A322-ABC008BF5BEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{20D79B4B-B532-4E20-A322-ABC008BF5BEF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5B6A6628-D4A6-4DC6-82D9-62A21FD66EA0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B6A6628-D4A6-4DC6-82D9-62A21FD66EA0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B6A6628-D4A6-4DC6-82D9-62A21FD66EA0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B6A6628-D4A6-4DC6-82D9-62A21FD66EA0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

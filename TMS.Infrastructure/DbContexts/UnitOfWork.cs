@@ -1,28 +1,23 @@
-﻿using System;
-
-using TMS.Domain.Entities;
-using TMS.Domain.Interfaces.Persistence.Repositories;
+﻿using TMS.Domain.Interfaces.Persistence.Repositories;
 using TMS.Domain.Interfaces.Persistence;
-using TMS.Infrastructure.Repositories;
-
 namespace TMS.Infrastructure.DbContexts;
 public class UnitOfWork : IUnitOfWork
 {
     private readonly AppDbContext _context;
+    private readonly ITrainerRepository _trainerRepository;
+    private readonly ITraineeRepository _traineeRepository;
 
-    public UnitOfWork(AppDbContext context)
+    public UnitOfWork(AppDbContext context, ITrainerRepository trainerRepository, ITraineeRepository traineeRepository)
     {
         _context = context;
-        Admins = new GenericRepository<Admin>(_context);
-        Trainers = new GenericRepository<Trainer>(_context);
-        Trainees = new GenericRepository<Trainee>(_context);
+        _trainerRepository = trainerRepository;
+        _traineeRepository = traineeRepository;
     }
 
-    public IGenericRepository<Admin> Admins { get; private set; }
-    public IGenericRepository<Trainer> Trainers { get; private set; }
-    public IGenericRepository<Trainee> Trainees { get; private set; }
+    public ITrainerRepository TrainerRepository => _trainerRepository;
+    public ITraineeRepository TraineeRepository => _traineeRepository;
 
-    public async Task<int> CompleteAsync()
+    public async Task<int> CommitAsync()
     {
         return await _context.SaveChangesAsync();
     }

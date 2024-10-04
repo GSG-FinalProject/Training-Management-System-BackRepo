@@ -1,7 +1,7 @@
 ﻿namespace TMS.Domain.Entities;
 public class Trainee : User
 {
-    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-    public String TrainingProgram { get; set; }
-    public int TrainingHours { get; set; }
+    public ICollection<Submission> Submissions { get; set; }
+    public string TrainerId { get; set; }  
+    public Trainer Trainer { get; set; }
 }

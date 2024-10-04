@@ -20,7 +20,7 @@ public class UserManagerTests
     }
 
     [Fact]
-    public async Task FindByEmailAsync_ShouldReturnUser_WhenUserExists()
+    public async System.Threading.Tasks.Task FindByEmailAsync_ShouldReturnUser_WhenUserExists()
     {
         // Arrange
         var email = "leenodeh@example.com";
@@ -38,7 +38,7 @@ public class UserManagerTests
     }
 
     [Fact]
-    public async Task CheckPasswordAsync_ShouldReturnTrue_WhenPasswordIsCorrect()
+    public async System.Threading.Tasks.Task CheckPasswordAsync_ShouldReturnTrue_WhenPasswordIsCorrect()
     {
         // Arrange
         var user = new User { Email = "moneer5@example.com", UserName = "moneer5" };

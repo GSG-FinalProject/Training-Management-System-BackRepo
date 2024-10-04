@@ -87,8 +87,6 @@ public class AuthService : IAuthService
             UserType = Role.Trainee,
             FirstName = registerTraineeDto.FirstName,
             LastName = registerTraineeDto.LastName,
-            TrainingHours = registerTraineeDto.TrainingHours,
-            TrainingProgram = registerTraineeDto.TrainingProgram,
         };
 
         var result = await _userManager.CreateAsync(trainee, registerTraineeDto.Password);
@@ -102,8 +100,6 @@ public class AuthService : IAuthService
                 LastName = trainee.LastName,
                 UserType = trainee.UserType,
                 CreatedAt = trainee.CreatedAt,
-                TrainingHours = trainee.TrainingHours
-
             };
         }
 

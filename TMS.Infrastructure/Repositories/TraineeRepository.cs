@@ -11,8 +11,4 @@ public class TraineeRepository : GenericRepository<Trainee>, ITraineeRepository
     {
     }
 
-    public async Task<IEnumerable<Trainee>> GetByTrainingHoursAsync(int hours)
-    {
-        return await _appDbContext.Set<Trainee>().Where(t => t.TrainingHours >= hours).ToListAsync();
-    }
 }

@@ -9,7 +9,7 @@ public static class SwaggerServiceExtensions
         {
             c.SwaggerDoc("v1", new OpenApiInfo
             {
-                Title = "HotelBookingPlatform.API",
+                Title = "TrainingManagementSystem.API",
                 Version = "v1"
             });
             //c.EnableAnnotations();

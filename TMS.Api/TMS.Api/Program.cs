@@ -10,12 +10,13 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
-        builder.Services.AddEndpointsApiExplorer();
 
-        builder.Services.AddApplicationDependencies()
-                        .AddPresentationDependencies(builder.Configuration)
-                        .AddInfrastructureDependencies(builder.Configuration)
-                        .AddSwaggerDocumentation().AddCorsPolicy();
+        builder.Services.AddEndpointsApiExplorer()
+            .AddApplicationDependencies()
+            .AddPresentationDependencies(builder.Configuration)
+            .AddInfrastructureDependencies(builder.Configuration)
+            .AddSwaggerDocumentation()
+            .AddCorsPolicy();
 
         var app = builder.Build();
 

@@ -28,6 +28,9 @@ public static class ModuleInfrastructureDependencies
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
+        services.AddScoped<ISubmissionRepository, SubmissionRepository>();
+        services.AddScoped<ISubmissionService, SubmissionService>();
+
         return services;
     }
 }

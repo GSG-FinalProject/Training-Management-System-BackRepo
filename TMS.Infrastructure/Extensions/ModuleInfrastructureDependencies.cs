@@ -18,6 +18,7 @@ public static class ModuleInfrastructureDependencies
         services.AddDbContext<AppDbContext>(options =>
           options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
+        services.AddScoped<ITrainingFieldRepository, TrainingFieldRepository>();
 
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));

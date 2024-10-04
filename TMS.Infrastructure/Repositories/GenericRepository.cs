@@ -1,10 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TMS.Domain.Interfaces.Persistence.Repositories;
 using TMS.Infrastructure.DbContexts;
+
 namespace TMS.Infrastructure.Repositories;
 public class GenericRepository<T> : IGenericRepository<T> where T : class
 {
     protected readonly AppDbContext _appDbContext;
+
     public GenericRepository(AppDbContext appDbContext)
     {
         _appDbContext = appDbContext ?? throw new ArgumentNullException(nameof(appDbContext));
@@ -20,13 +22,22 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
     public async Task<string> DeleteAsync(string id)
     {
         var entity = await _appDbContext.Set<T>().FindAsync(id);
-
         if (entity is null)
             throw new KeyNotFoundException($"Entity with ID {id} not found.");
 
         _appDbContext.Set<T>().Remove(entity);
         await _appDbContext.SaveChangesAsync();
+        return "Entity deleted successfully.";
+    }
 
+    public async Task<string> DeleteAsync(int id)
+    {
+        var entity = await _appDbContext.Set<T>().FindAsync(id);
+        if (entity is null)
+            throw new KeyNotFoundException($"Entity with ID {id} not found.");
+
+        _appDbContext.Set<T>().Remove(entity);
+        await _appDbContext.SaveChangesAsync();
         return "Entity deleted successfully.";
     }
 
@@ -38,23 +49,38 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
     public async Task<T> GetByIdAsync(string id)
     {
         var entity = await _appDbContext.Set<T>().FindAsync(id);
-
         if (entity is null)
             throw new KeyNotFoundException($"Entity with ID {id} not found.");
+        return entity;
+    }
 
+    public async Task<T> GetByIdAsync(int id)
+    {
+        var entity = await _appDbContext.Set<T>().FindAsync(id);
+        if (entity is null)
+            throw new KeyNotFoundException($"Entity with ID {id} not found.");
         return entity;
     }
 
     public async Task<T> UpdateAsync(string id, T entity)
     {
         var existingEntity = await _appDbContext.Set<T>().FindAsync(id);
-
         if (existingEntity is null)
             throw new KeyNotFoundException($"Entity with ID {id} not found.");
 
         _appDbContext.Entry(existingEntity).CurrentValues.SetValues(entity);
         await _appDbContext.SaveChangesAsync();
+        return existingEntity;
+    }
 
+    public async Task<T> UpdateAsync(int id, T entity)
+    {
+        var existingEntity = await _appDbContext.Set<T>().FindAsync(id);
+        if (existingEntity is null)
+            throw new KeyNotFoundException($"Entity with ID {id} not found.");
+
+        _appDbContext.Entry(existingEntity).CurrentValues.SetValues(entity);
+        await _appDbContext.SaveChangesAsync();
         return existingEntity;
     }
 }

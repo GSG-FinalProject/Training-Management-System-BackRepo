@@ -51,7 +51,7 @@ public class AuthServiceTests
         // Assert
         result.Should().NotBeNull();
         result.Email.Should().Be(admin.Email);
-        result.UserType.Should().Be(Role.Admin);
+        result.UserType.Should().Be("Admin");
     }
 
     [Fact]
@@ -101,7 +101,7 @@ public class AuthServiceTests
         // Assert
         result.Should().NotBeNull();
         result.Email.Should().Be(trainer.Email);
-        result.UserType.Should().Be(Role.Trainer);
+        result.UserType.Should().Be("Trainer");
     }
 
     [Fact]
@@ -138,8 +138,6 @@ public class AuthServiceTests
             FirstName = "tala",
             LastName = "Ismael",
             Password = "TalaTala12",
-            TrainingHours = 400,
-            TrainingProgram = "QA"
         };
 
         var trainee = new Trainee { Id = "1", Email = registerTraineeDto.Email, UserName = registerTraineeDto.Email, UserType = Role.Trainee };
@@ -153,8 +151,7 @@ public class AuthServiceTests
         // Assert
         result.Should().NotBeNull();
         result.Email.Should().Be(trainee.Email);
-        result.UserType.Should().Be(Role.Trainee);
-        result.TrainingHours.Should().Be(registerTraineeDto.TrainingHours);
+        result.UserType.Should().Be("Trainee");
     }
 
     [Fact]
@@ -167,8 +164,6 @@ public class AuthServiceTests
             FirstName = "layan",
             LastName = "alfar",
             Password = "pass123",
-            TrainingHours = 200,
-            TrainingProgram = "Backend"
         };
 
         var errors = new[] { "Email already exists." };

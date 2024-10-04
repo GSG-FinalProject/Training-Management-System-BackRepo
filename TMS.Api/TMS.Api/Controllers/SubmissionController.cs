@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TMS.Application.Abstracts;
+using TMS.Domain.DTOs.Submission;
 
 namespace TMS.Api.Controllers;
 
@@ -26,7 +27,7 @@ public class SubmissionController : ControllerBase
     public async Task<ActionResult<SubmissionResponseDto>> GetById(int id)
     {
         var submission = await _submissionService.GetByIdAsync(id);
-        if (submission == null)
+        if (submission is null)
         {
             return NotFound();
         }

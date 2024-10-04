@@ -28,7 +28,10 @@ public class UnitOfWork : IUnitOfWork
     public ITrainerRepository TrainerRepository => _trainerRepository;
     public ITraineeRepository TraineeRepository => _traineeRepository;
     public ITrainingFieldRepository TrainingFieldRepository { get; }
-    public ICourseRepository CoursesRepository { get; } 
+    public ICourseRepository CoursesRepository { get; }
+
+    public ITaskRepository TasksRepository => throw new NotImplementedException();
+
     public async Task<int> CommitAsync()
     {
         return await _context.SaveChangesAsync();

@@ -1,26 +1,33 @@
-﻿using TMS.Domain.Interfaces.Persistence.Repositories;
+﻿using TMS.Infrastructure.Repositories;
+using TMS.Domain.Entities;
+using TMS.Domain.Interfaces.Persistence.Repositories;
+using System.Threading.Tasks;
 using TMS.Domain.Interfaces.Persistence;
-using TMS.Infrastructure.Repositories;
+
 namespace TMS.Infrastructure.DbContexts;
+
 public class UnitOfWork : IUnitOfWork
 {
     private readonly AppDbContext _context;
     private readonly ITrainerRepository _trainerRepository;
     private readonly ITraineeRepository _traineeRepository;
 
-    public UnitOfWork(AppDbContext context, ITrainerRepository trainerRepository, ITraineeRepository traineeRepository)
+    public UnitOfWork(
+        AppDbContext context,
+        ITrainerRepository trainerRepository,
+        ITraineeRepository traineeRepository)
     {
         _context = context;
         _trainerRepository = trainerRepository;
         _traineeRepository = traineeRepository;
         TrainingFieldRepository = new TrainingFieldRepository(context);
-
+        CoursesRepository = new CourseRepository(context);
     }
 
     public ITrainerRepository TrainerRepository => _trainerRepository;
     public ITraineeRepository TraineeRepository => _traineeRepository;
     public ITrainingFieldRepository TrainingFieldRepository { get; }
-
+    public ICourseRepository CoursesRepository { get; } 
     public async Task<int> CommitAsync()
     {
         return await _context.SaveChangesAsync();

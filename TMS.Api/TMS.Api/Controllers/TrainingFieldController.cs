@@ -30,7 +30,7 @@ public class TrainingFieldController : ControllerBase
     }
 
     [HttpPost]
-    [Authorize(Roles = "Admin")]
+   // [Authorize(Roles = "Admin")]
     public async Task<IActionResult> CreateAsync([FromBody] AddTrainingFieldDto trainingFieldDto)
     {
         var trainingField = await _trainingFieldService.CreateAsync(trainingFieldDto);

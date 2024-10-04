@@ -26,16 +26,18 @@ public class TrainingFieldService : ITrainingFieldService
         return new TrainingFieldDto
         {
             Id = trainingField.Id,
-            Name = trainingField.Name
+            Name = trainingField.Name,
+            Description = trainingField.Description,
+
         };
     }
-
 
     public async Task<TrainingField> CreateAsync(AddTrainingFieldDto trainingFieldDto)
     {
         var trainingField = new TrainingField
         {
-            Name = trainingFieldDto.Name
+            Name = trainingFieldDto.Name,
+            Description = trainingFieldDto.Description,
         };
         return await _trainingFieldRepository.CreateAsync(trainingField);
     }
@@ -45,7 +47,8 @@ public class TrainingFieldService : ITrainingFieldService
         var trainingField = new TrainingField
         {
             Id = id,
-            Name = trainingFieldDto.Name
+            Name = trainingFieldDto.Name,
+            Description = trainingFieldDto.Description,
         };
         await _trainingFieldRepository.UpdateAsync(id,trainingField);
     }
@@ -67,7 +70,8 @@ public class TrainingFieldService : ITrainingFieldService
         var trainingFieldDtos = trainingFields.Select(trainingField => new TrainingFieldDto
         {
             Id = trainingField.Id,
-            Name = trainingField.Name
+            Name = trainingField.Name,
+            Description = trainingField.Description,
         });
 
         return trainingFieldDtos;

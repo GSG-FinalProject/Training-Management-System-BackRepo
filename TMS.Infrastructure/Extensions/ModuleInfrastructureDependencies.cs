@@ -18,7 +18,7 @@ public static class ModuleInfrastructureDependencies
         CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
 
         services.AddScoped<ICourseService, CourseService>();
-
+        services.AddScoped<IFeedbackRepository, FeedbackRepository>();
         services.AddDbContext<AppDbContext>(options =>
           options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 

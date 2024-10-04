@@ -22,7 +22,7 @@ public class TrainingFieldController : ControllerBase
     public async Task<IActionResult> GetByIdAsync(int id)
     {
         var trainingField = await _trainingFieldService.GetByIdAsync(id);
-        if (trainingField == null)
+        if (trainingField is null)
         {
             return _responseHandler.NotFound("Training field not found.");
         }
@@ -30,7 +30,7 @@ public class TrainingFieldController : ControllerBase
     }
 
     [HttpPost]
-   // [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> CreateAsync([FromBody] AddTrainingFieldDto trainingFieldDto)
     {
         var trainingField = await _trainingFieldService.CreateAsync(trainingFieldDto);

@@ -31,13 +31,13 @@ public class AppDbContext : IdentityDbContext<User>
           .HasOne(s => s.Trainee)
           .WithMany(t => t.Submissions)
           .HasForeignKey(s => s.TraineeId)
-          .OnDelete(DeleteBehavior.Restrict); // تغيير إلى Restrict
+          .OnDelete(DeleteBehavior.Restrict); 
 
         modelBuilder.Entity<Submission>()
             .HasOne(s => s.Task)
             .WithMany(t => t.Submissions)
             .HasForeignKey(s => s.TaskId)
-            .OnDelete(DeleteBehavior.Restrict); // تغيير إلى Restrict
+            .OnDelete(DeleteBehavior.Restrict);
 
         base.OnModelCreating(modelBuilder);
     }

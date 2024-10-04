@@ -43,7 +43,7 @@ public class TrainerController : ControllerBase
         try
         {
             var trainer = await _unitOfWork.TrainerRepository.GetByIdAsync(id);
-            if (trainer == null)
+            if (trainer is null)
             {
                 return _responseHandler.NotFound("Trainer not found.");
             }

@@ -17,6 +17,7 @@ public static class ModuleApplicationDependencies
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<IUserManager, UserManager>();
         services.AddScoped<ITokenService, TokenService>();
+        services.AddScoped<ITraineeService, TraineeService>();
         services.AddScoped<ITrainingFieldService, TrainingFieldService>();
         return services;
     }

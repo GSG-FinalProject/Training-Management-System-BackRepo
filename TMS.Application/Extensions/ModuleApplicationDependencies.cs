@@ -1,13 +1,7 @@
-﻿
-using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using TMS.Application.Abstracts.IAuthService;
 using TMS.Application.Implementations;
 using TMS.Application.Abstracts;
-using TMS.Domain.Interfaces.Persistence.Repositories;
-using TMS.Domain.Interfaces.Persistence;
 
 namespace TMS.Application.Extensions;
 public static class ModuleApplicationDependencies
@@ -19,6 +13,8 @@ public static class ModuleApplicationDependencies
         services.AddScoped<ITokenService, TokenService>();
         services.AddScoped<ITraineeService, TraineeService>();
         services.AddScoped<ITrainingFieldService, TrainingFieldService>();
+        services.AddScoped<ITaskService, TaskService>();
+
         return services;
     }
 }

@@ -11,17 +11,18 @@ public class UnitOfWork : IUnitOfWork
     private readonly AppDbContext _context;
     private readonly ITrainerRepository _trainerRepository;
     private readonly ITraineeRepository _traineeRepository;
-
+    private readonly ITaskRepository _taskRepository;
     public UnitOfWork(
         AppDbContext context,
         ITrainerRepository trainerRepository,
-        ITraineeRepository traineeRepository)
+        ITraineeRepository traineeRepository, ITaskRepository taskRepository)
     {
         _context = context;
         _trainerRepository = trainerRepository;
         _traineeRepository = traineeRepository;
         TrainingFieldRepository = new TrainingFieldRepository(context);
         CoursesRepository = new CourseRepository(context);
+        _taskRepository = taskRepository;
     }
 
     public ITrainerRepository TrainerRepository => _trainerRepository;

@@ -23,6 +23,7 @@ public static class ModuleInfrastructureDependencies
           options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
         services.AddScoped<ITrainingFieldRepository, TrainingFieldRepository>();
+        services.AddScoped<ITaskRepository,TaskRepository>();
 
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));

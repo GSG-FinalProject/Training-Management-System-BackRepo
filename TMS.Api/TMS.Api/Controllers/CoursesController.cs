@@ -1,5 +1,5 @@
-﻿
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using TMS.Api.Responses;
 using TMS.Application.Abstracts;
 using TMS.Domain.DTOs.Course;
 
@@ -10,104 +10,94 @@ namespace TMS.Api.Controllers;
 public class CoursesController : ControllerBase
 {
     private readonly ICourseService _courseService;
+    private readonly IResponseHandler _responseHandler;
 
-    public CoursesController(ICourseService courseService)
+    public CoursesController(ICourseService courseService, IResponseHandler responseHandler)
     {
         _courseService = courseService;
+        _responseHandler = responseHandler;
     }
 
-    // POST: api/courses
-    [HttpPost]
+    [HttpPost("add")]
     public async Task<IActionResult> AddCourse([FromBody] AddCourseRequest request)
     {
-        if (request == null)
+        if (request is null)
         {
-            return BadRequest(new { message = "Invalid course data." });
+            return _responseHandler.BadRequest("Invalid course data.");
         }
 
         try
         {
             var result = await _courseService.AddCourseAsync(request);
-            return result ? Ok(new { message = "Course added successfully." }) : BadRequest(new { message = "Failed to add course." });
+            if (result)
+            {
+                return _responseHandler.Success("Course added successfully.");
+            }
+            return _responseHandler.BadRequest("Failed to add the course.");
         }
         catch (Exception ex)
         {
-            return StatusCode(500, new { message = "An error occurred while adding the course.", details = ex.Message });
+            return _responseHandler.UnprocessableEntity($"An error occurred: {ex.Message}");
         }
     }
 
-    // PUT: api/courses/{id}
-    [HttpPut("{id}")]
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetCourse(int id)
+    {
+        try
+        {
+            var course = await _courseService.GetCourseByIdAsync(id);
+            if (course is null)
+            {
+                return _responseHandler.NotFound("Course not found.");
+            }
+
+            return _responseHandler.Success(course, "Course retrieved successfully.");
+        }
+        catch (Exception ex)
+        {
+            return _responseHandler.UnprocessableEntity($"An error occurred: {ex.Message}");
+        }
+    }
+
+    [HttpPut("update/{id}")]
     public async Task<IActionResult> UpdateCourse(int id, [FromBody] CourseDto request)
     {
-        if (request == null || id <= 0)
+        if (request is null)
         {
-            return BadRequest(new { message = "Invalid course data or ID." });
+            return _responseHandler.BadRequest("Invalid course data.");
         }
 
         try
         {
             var result = await _courseService.UpdateCourseAsync(id, request);
-            return result ? Ok(new { message = "Course updated successfully." }) : NotFound(new { message = "Course not found." });
+            if (result)
+            {
+                return _responseHandler.Success("Course updated successfully.");
+            }
+            return _responseHandler.NotFound("Course not found.");
         }
         catch (Exception ex)
         {
-            return StatusCode(500, new { message = "An error occurred while updating the course.", details = ex.Message });
+            return _responseHandler.UnprocessableEntity($"An error occurred: {ex.Message}");
         }
     }
 
-    // DELETE: api/courses/{id}
-    [HttpDelete("{id}")]
+    [HttpDelete("delete/{id}")]
     public async Task<IActionResult> DeleteCourse(int id)
     {
-        if (id <= 0)
-        {
-            return BadRequest(new { message = "Invalid course ID." });
-        }
-
         try
         {
             var result = await _courseService.DeleteCourseAsync(id);
-            return result ? Ok(new { message = "Course deleted successfully." }) : NotFound(new { message = "Course not found." });
+            if (result)
+            {
+                return _responseHandler.Success("Course deleted successfully.");
+            }
+            return _responseHandler.NotFound("Course not found.");
         }
         catch (Exception ex)
         {
-            return StatusCode(500, new { message = "An error occurred while deleting the course.", details = ex.Message });
-        }
-    }
-
-    // GET: api/courses
-    [HttpGet]
-    public async Task<IActionResult> GetAllCourses()
-    {
-        try
-        {
-            var courses = await _courseService.GetAllCoursesAsync();
-            return Ok(courses);
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(500, new { message = "An error occurred while retrieving courses.", details = ex.Message });
-        }
-    }
-
-    // GET: api/courses/{id}
-    [HttpGet("{id}")]
-    public async Task<IActionResult> GetCourseById(int id)
-    {
-        if (id <= 0)
-        {
-            return BadRequest(new { message = "Invalid course ID." });
-        }
-
-        try
-        {
-            var course = await _courseService.GetCourseByIdAsync(id);
-            return course != null ? Ok(course) : NotFound(new { message = "Course not found." });
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(500, new { message = "An error occurred while retrieving the course.", details = ex.Message });
+            return _responseHandler.UnprocessableEntity($"An error occurred: {ex.Message}");
         }
     }
 }

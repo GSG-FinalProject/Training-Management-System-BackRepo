@@ -2,6 +2,8 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Globalization;
+using TMS.Application.Abstracts;
+using TMS.Application.Implementations;
 using TMS.Domain.Interfaces.Persistence;
 using TMS.Domain.Interfaces.Persistence.Repositories;
 using TMS.Infrastructure.DbContexts;
@@ -14,6 +16,8 @@ public static class ModuleInfrastructureDependencies
         var cultureInfo = new CultureInfo("en-US");
         CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
         CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
+
+        services.AddScoped<ICourseService, CourseService>();
 
         services.AddDbContext<AppDbContext>(options =>
           options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));

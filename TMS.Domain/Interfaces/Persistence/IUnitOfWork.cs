@@ -8,5 +8,6 @@ public interface IUnitOfWork : IDisposable
     ITrainerRepository TrainerRepository { get; }
     ITraineeRepository TraineeRepository { get; }
     ITrainingFieldRepository TrainingFieldRepository { get; }
+    ICourseRepository CoursesRepository { get; }
     Task<int> CommitAsync(); 
 }

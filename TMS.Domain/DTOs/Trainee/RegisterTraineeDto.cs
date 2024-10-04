@@ -5,6 +5,5 @@ public class RegisterTraineeDto
     public string Password { get; set; }
     public string FirstName { get; set; }
     public string LastName { get; set; }
-    public String TrainingProgram { get; set; }
-    public int TrainingHours { get; set; }
+    public string TrainerId { get; set; }
 }

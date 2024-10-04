@@ -39,7 +39,7 @@ public class AuthService : IAuthService
             {
                 Id = admin.Id,
                 Email = admin.Email,
-                UserType = admin.UserType,
+                UserType = admin.UserType.ToString(),
                 CreatedAt = DateTime.UtcNow
             };
         }
@@ -57,7 +57,8 @@ public class AuthService : IAuthService
             UserName = registerTrainerDto.Email,
             UserType = Role.Trainer,
             FirstName = registerTrainerDto.FirstName,
-            LastName = registerTrainerDto.LastName
+            LastName = registerTrainerDto.LastName,
+            Bio = registerTrainerDto.Bio
         };
 
         var result = await _userManager.CreateAsync(trainer, registerTrainerDto.Password);
@@ -69,7 +70,7 @@ public class AuthService : IAuthService
                 Email = trainer.Email,
                 FirstName = trainer.FirstName,
                 LastName = trainer.LastName,
-                UserType = trainer.UserType,
+                UserType = trainer.UserType.ToString(),
                 CreatedAt = trainer.CreatedAt
             };
         }
@@ -87,6 +88,7 @@ public class AuthService : IAuthService
             UserType = Role.Trainee,
             FirstName = registerTraineeDto.FirstName,
             LastName = registerTraineeDto.LastName,
+            TrainerId = registerTraineeDto.TrainerId
         };
 
         var result = await _userManager.CreateAsync(trainee, registerTraineeDto.Password);
@@ -98,7 +100,7 @@ public class AuthService : IAuthService
                 Email = trainee.Email,
                 FirstName = trainee.FirstName,
                 LastName = trainee.LastName,
-                UserType = trainee.UserType,
+                UserType = trainee.UserType.ToString(),
                 CreatedAt = trainee.CreatedAt,
             };
         }

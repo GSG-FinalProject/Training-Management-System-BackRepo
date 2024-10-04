@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TMS.Infrastructure.DbContexts;
 
@@ -11,9 +12,11 @@ using TMS.Infrastructure.DbContexts;
 namespace TMS.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241004093033_UpdateSubmissions")]
+    partial class UpdateSubmissions
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -397,13 +400,7 @@ namespace TMS.Infrastructure.Migrations
                     b.Property<int?>("CourseId")
                         .HasColumnType("int");
 
-                    b.Property<string>("TrainerId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasIndex("CourseId");
-
-                    b.HasIndex("TrainerId");
 
                     b.ToTable("Trainees", (string)null);
                 });
@@ -558,14 +555,6 @@ namespace TMS.Infrastructure.Migrations
                         .HasForeignKey("TMS.Domain.Entities.Trainee", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("TMS.Domain.Entities.Trainer", "Trainer")
-                        .WithMany("Trainees")
-                        .HasForeignKey("TrainerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Trainer");
                 });
 
             modelBuilder.Entity("TMS.Domain.Entities.Trainer", b =>
@@ -608,8 +597,6 @@ namespace TMS.Infrastructure.Migrations
             modelBuilder.Entity("TMS.Domain.Entities.Trainer", b =>
                 {
                     b.Navigation("Courses");
-
-                    b.Navigation("Trainees");
                 });
 #pragma warning restore 612, 618
         }

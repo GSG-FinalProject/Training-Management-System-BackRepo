@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace TMS.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialMigration : Migration
+    public partial class UpdateSubmissions : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -58,35 +58,13 @@ namespace TMS.Infrastructure.Migrations
                 name: "TrainingFields",
                 columns: table => new
                 {
-                    TrainingFieldId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    TrainingName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    TrainingDescription = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TrainingFields", x => x.TrainingFieldId);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Courses",
-                columns: table => new
-                {
-                    CourseId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    CourseName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CourseDescription = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    TrainingFieldId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Courses", x => x.CourseId);
-                    table.ForeignKey(
-                        name: "FK_Courses_TrainingFields_TrainingFieldId",
-                        column: x => x.TrainingFieldId,
-                        principalTable: "TrainingFields",
-                        principalColumn: "TrainingFieldId",
-                        onDelete: ReferentialAction.Cascade);
+                    table.PrimaryKey("PK_TrainingFields", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -114,7 +92,8 @@ namespace TMS.Infrastructure.Migrations
                 name: "Admins",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Bio = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -213,11 +192,79 @@ namespace TMS.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Trainers",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Bio = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Trainers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Trainers_AspNetUsers_Id",
+                        column: x => x.Id,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Courses",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TrainingFieldId = table.Column<int>(type: "int", nullable: false),
+                    TrainerId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Courses", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Courses_Trainers_TrainerId",
+                        column: x => x.TrainerId,
+                        principalTable: "Trainers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Courses_TrainingFields_TrainingFieldId",
+                        column: x => x.TrainingFieldId,
+                        principalTable: "TrainingFields",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Tasks",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Deadline = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CourseId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Tasks", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Tasks_Courses_CourseId",
+                        column: x => x.CourseId,
+                        principalTable: "Courses",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Trainees",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    TrainingFieldId = table.Column<int>(type: "int", nullable: false)
+                    CourseId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -229,20 +276,148 @@ namespace TMS.Infrastructure.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Trainees_TrainingFields_TrainingFieldId",
-                        column: x => x.TrainingFieldId,
-                        principalTable: "TrainingFields",
-                        principalColumn: "TrainingFieldId",
+                        name: "FK_Trainees_Courses_CourseId",
+                        column: x => x.CourseId,
+                        principalTable: "Courses",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Submissions",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FilePath = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    SubmittedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    TraineeId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    TaskId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Submissions", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Submissions_Tasks_TaskId",
+                        column: x => x.TaskId,
+                        principalTable: "Tasks",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Submissions_Trainees_TraineeId",
+                        column: x => x.TraineeId,
+                        principalTable: "Trainees",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Feedbacks",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Comment = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Rating = table.Column<int>(type: "int", nullable: false),
+                    GivenAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    TrainerId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    SubmissionId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Feedbacks", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Feedbacks_Submissions_SubmissionId",
+                        column: x => x.SubmissionId,
+                        principalTable: "Submissions",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Feedbacks_Trainers_TrainerId",
+                        column: x => x.TrainerId,
+                        principalTable: "Trainers",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
-           
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetRoleClaims_RoleId",
+                table: "AspNetRoleClaims",
+                column: "RoleId");
 
-           
+            migrationBuilder.CreateIndex(
+                name: "RoleNameIndex",
+                table: "AspNetRoles",
+                column: "NormalizedName",
+                unique: true,
+                filter: "[NormalizedName] IS NOT NULL");
 
-        
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetUserClaims_UserId",
+                table: "AspNetUserClaims",
+                column: "UserId");
 
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetUserLogins_UserId",
+                table: "AspNetUserLogins",
+                column: "UserId");
 
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetUserRoles_RoleId",
+                table: "AspNetUserRoles",
+                column: "RoleId");
+
+            migrationBuilder.CreateIndex(
+                name: "EmailIndex",
+                table: "AspNetUsers",
+                column: "NormalizedEmail");
+
+            migrationBuilder.CreateIndex(
+                name: "UserNameIndex",
+                table: "AspNetUsers",
+                column: "NormalizedUserName",
+                unique: true,
+                filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Courses_TrainerId",
+                table: "Courses",
+                column: "TrainerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Courses_TrainingFieldId",
+                table: "Courses",
+                column: "TrainingFieldId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Feedbacks_SubmissionId",
+                table: "Feedbacks",
+                column: "SubmissionId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Feedbacks_TrainerId",
+                table: "Feedbacks",
+                column: "TrainerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Submissions_TaskId",
+                table: "Submissions",
+                column: "TaskId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Submissions_TraineeId",
+                table: "Submissions",
+                column: "TraineeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Tasks_CourseId",
+                table: "Tasks",
+                column: "CourseId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Trainees_CourseId",
+                table: "Trainees",
+                column: "CourseId");
         }
 
         /// <inheritdoc />
@@ -270,10 +445,10 @@ namespace TMS.Infrastructure.Migrations
                 name: "Feedbacks");
 
             migrationBuilder.DropTable(
-                name: "Submission");
+                name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "AspNetRoles");
+                name: "Submissions");
 
             migrationBuilder.DropTable(
                 name: "Tasks");

@@ -2,12 +2,11 @@
 public class Feedback
 {
     public int Id { get; set; }
-    public int SubmissionId { get; set; }
-    public string Comments { get; set; }
-    public int TaskId { get; set; }
-    public Task Task { get; set; }
-    public string TrainerId { get; set; }
+    public string Comment { get; set; }
+    public int Rating { get; set; } 
+    public DateTime GivenAt { get; set; } = DateTime.UtcNow;
     public Trainer Trainer { get; set; }
-    public string TraineeId { get; set; }
-    public Trainee Trainee { get; set; }
+    public string TrainerId { get; set; }
+    public Submission Submission { get; set; }
+    public int SubmissionId { get; set; }
 }

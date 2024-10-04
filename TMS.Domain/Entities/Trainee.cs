@@ -1,5 +1,7 @@
 ﻿namespace TMS.Domain.Entities;
 public class Trainee : User
 {
-    public List<Submission> Submissions { get; set; } = new List<Submission>();
+    public ICollection<Submission> Submissions { get; set; }
+    public string TrainerId { get; set; }  
+    public Trainer Trainer { get; set; }
 }

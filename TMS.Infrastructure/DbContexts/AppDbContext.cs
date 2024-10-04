@@ -15,6 +15,7 @@ public class AppDbContext : IdentityDbContext<User>
     public DbSet<Course> Courses { get; set; }
     public DbSet<TrainingField> TrainingFields { get; set; }
     public DbSet<Feedback> Feedbacks { get; set; }
+    public DbSet<Submission> Submissions { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -25,6 +26,18 @@ public class AppDbContext : IdentityDbContext<User>
         modelBuilder.Entity<Course>().ToTable("Courses");
         modelBuilder.Entity<TrainingField>().ToTable("TrainingFields");
         modelBuilder.Entity<Feedback>().ToTable("Feedbacks");
+
+        modelBuilder.Entity<Submission>()
+          .HasOne(s => s.Trainee)
+          .WithMany(t => t.Submissions)
+          .HasForeignKey(s => s.TraineeId)
+          .OnDelete(DeleteBehavior.Restrict); // تغيير إلى Restrict
+
+        modelBuilder.Entity<Submission>()
+            .HasOne(s => s.Task)
+            .WithMany(t => t.Submissions)
+            .HasForeignKey(s => s.TaskId)
+            .OnDelete(DeleteBehavior.Restrict); // تغيير إلى Restrict
 
         base.OnModelCreating(modelBuilder);
     }

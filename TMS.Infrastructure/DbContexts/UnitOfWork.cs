@@ -1,5 +1,6 @@
 ﻿using TMS.Domain.Interfaces.Persistence.Repositories;
 using TMS.Domain.Interfaces.Persistence;
+using TMS.Infrastructure.Repositories;
 namespace TMS.Infrastructure.DbContexts;
 public class UnitOfWork : IUnitOfWork
 {
@@ -12,10 +13,13 @@ public class UnitOfWork : IUnitOfWork
         _context = context;
         _trainerRepository = trainerRepository;
         _traineeRepository = traineeRepository;
+        TrainingFieldRepository = new TrainingFieldRepository(context);
+
     }
 
     public ITrainerRepository TrainerRepository => _trainerRepository;
     public ITraineeRepository TraineeRepository => _traineeRepository;
+    public ITrainingFieldRepository TrainingFieldRepository { get; }
 
     public async Task<int> CommitAsync()
     {

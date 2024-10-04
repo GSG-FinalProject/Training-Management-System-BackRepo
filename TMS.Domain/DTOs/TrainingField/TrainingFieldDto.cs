@@ -1,8 +1,7 @@
-﻿namespace TMS.Domain.Entities;
-public class TrainingField
+﻿namespace TMS.Domain.DTOs.TrainingField;
+public class TrainingFieldDto
 {
     public int Id { get; set; }
     public string Name { get; set; }
     public string Description { get; set; }
-    public ICollection<Course> Courses { get; set; }
 }

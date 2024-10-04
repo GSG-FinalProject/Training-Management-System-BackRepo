@@ -1,6 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TMS.Application.Abstracts;
+using TMS.Api.Responses;
 using TMS.Domain.DTOs.Submission;
 
 namespace TMS.Api.Controllers;
@@ -10,48 +11,52 @@ namespace TMS.Api.Controllers;
 public class SubmissionController : ControllerBase
 {
     private readonly ISubmissionService _submissionService;
+    private readonly IResponseHandler _responseHandler;
 
-    public SubmissionController(ISubmissionService submissionService)
+    public SubmissionController(ISubmissionService submissionService, IResponseHandler responseHandler)
     {
         _submissionService = submissionService;
+        _responseHandler = responseHandler;
     }
 
     [HttpPost]
-    public async Task<ActionResult<SubmissionResponseDto>> CreateSubmission(AddSubmissionRequestDto submissionDto)
+    [Authorize(Roles = "Trainee")]
+    public async Task<IActionResult> CreateSubmission(AddSubmissionRequestDto submissionDto)
     {
         var createdSubmission = await _submissionService.AddAsync(submissionDto);
-        return CreatedAtAction(nameof(GetById), new { id = createdSubmission.Id }, createdSubmission);
+        return _responseHandler.Created(createdSubmission, "Submission created successfully.");
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<SubmissionResponseDto>> GetById(int id)
+    public async Task<IActionResult> GetById(int id)
     {
         var submission = await _submissionService.GetByIdAsync(id);
         if (submission is null)
         {
-            return NotFound();
+            return _responseHandler.NotFound($"Submission with ID {id} not found.");
         }
-        return Ok(submission);
+        return _responseHandler.Success(submission);
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<SubmissionResponseDto>>> GetAll()
+    public async Task<IActionResult> GetAll()
     {
         var submissions = await _submissionService.GetAllAsync();
-        return Ok(submissions);
+        return _responseHandler.Success(submissions);
     }
 
     [HttpPut]
     public async Task<IActionResult> UpdateSubmission(UpdateSubmissionRequestDto submissionDto)
     {
         await _submissionService.UpdateAsync(submissionDto);
-        return NoContent();
+        return _responseHandler.NoContent("Submission updated successfully.");
     }
 
     [HttpDelete("{id}")]
+    [Authorize(Roles = "Trainee")]
     public async Task<IActionResult> DeleteSubmission(int id)
     {
         await _submissionService.DeleteAsync(id);
-        return NoContent();
+        return _responseHandler.NoContent("Submission deleted successfully.");
     }
 }

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using TMS.Api.Responses;
 using TMS.Application.Abstracts;
 using TMS.Domain.DTOs.Task;
 
@@ -10,52 +11,55 @@ namespace TMS.API.Controllers;
 public class TaskController : ControllerBase
 {
     private readonly ITaskService _taskService;
-    private readonly IMapper _mapper;
+    private readonly IResponseHandler _responseHandler; 
+    public IMapper _mapper { get; set; }
 
-    public TaskController(ITaskService taskService, IMapper mapper)
+    public TaskController(ITaskService taskService, IResponseHandler responseHandler,IMapper mapper)
     {
         _taskService = taskService;
+        _responseHandler = responseHandler; 
         _mapper = mapper;
     }
 
     [HttpPost]
-    public async Task<ActionResult<TaskResponseDto>> AddAsync(AddTaskRequest taskDto)
+    public async Task<IActionResult> AddAsync(AddTaskRequest taskDto)
     {
         var taskEntity = await _taskService.AddAsync(taskDto);
         var responseDto = _mapper.Map<TaskResponseDto>(taskEntity);
-        return CreatedAtAction(nameof(GetByIdAsync), new { id = responseDto.Id }, responseDto);
+        return _responseHandler.Created(responseDto, "Task created successfully.");
     }
 
     [HttpPut("{taskId}")]
-    public async Task<ActionResult> UpdateAsync(int taskId, UpdateTaskRequest taskDto)
+    public async Task<IActionResult> UpdateAsync(int taskId, UpdateTaskRequest taskDto)
     {
         await _taskService.UpdateAsync(taskDto);
-        return NoContent();
+        return _responseHandler.NoContent("Task updated successfully.");
     }
 
     [HttpDelete("{taskId}")]
-    public async Task<ActionResult> DeleteAsync(int taskId)
+    public async Task<IActionResult> DeleteAsync(int taskId)
     {
         await _taskService.DeleteAsync(taskId);
-        return NoContent();
+        return _responseHandler.NoContent("Task deleted successfully.");
     }
 
     [HttpGet("{taskId}")]
-    public async Task<ActionResult<TaskResponseDto>> GetByIdAsync(int taskId)
+    public async Task<IActionResult> GetByIdAsync(int taskId)
     {
         var taskResponseDto = await _taskService.GetByIdAsync(taskId);
         if (taskResponseDto is null)
         {
-            return NotFound();
+            return _responseHandler.NotFound($"Task with ID {taskId} not found.");
         }
 
-        return Ok(taskResponseDto);
+        return _responseHandler.Success(taskResponseDto);
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<TaskResponseDto>>> GetAllAsync()
+    public async Task<IActionResult> GetAllAsync()
     {
         var tasks = await _taskService.GetAllAsync();
-        return Ok(tasks);
+        return _responseHandler.Success(tasks);
     }
 }
+

@@ -43,7 +43,7 @@ namespace TMS.Api.Controllers
             try
             {
                 var trainee = await _unitOfWork.TraineeRepository.GetByIdAsync(id);
-                if (trainee == null)
+                if (trainee is null)
                 {
                     return _responseHandler.NotFound("Trainee not found.");
                 }

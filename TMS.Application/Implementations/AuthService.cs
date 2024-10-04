@@ -58,7 +58,8 @@ public class AuthService : IAuthService
             UserType = Role.Trainer,
             FirstName = registerTrainerDto.FirstName,
             LastName = registerTrainerDto.LastName,
-            Bio = registerTrainerDto.Bio
+            Bio = registerTrainerDto.Bio,
+            TrainingFieldId=registerTrainerDto.TrainingFieldId
         };
 
         var result = await _userManager.CreateAsync(trainer, registerTrainerDto.Password);

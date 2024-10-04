@@ -2,12 +2,9 @@
 public class Course
 {
     public int Id { get; set; }
-    public string Title { get; set; }
+    public string Name { get; set; }
+    public string ResoursesUrl { get; set; }
     public string Description { get; set; }
-    public TrainingField TrainingField { get; set; }
     public int TrainingFieldId { get; set; }
-    public ICollection<Task> Tasks { get; set; }
-    public Trainer Trainer { get; set; }
-    public string TrainerId { get; set; }
-    public ICollection<Trainee> Trainees { get; set; }
+    public virtual TrainingField TrainingField { get; set; }
 }

@@ -18,14 +18,18 @@ public static class ModuleInfrastructureDependencies
         CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
 
         services.AddScoped<ICourseService, CourseService>();
-
+        services.AddScoped<IFeedbackRepository, FeedbackRepository>();
         services.AddDbContext<AppDbContext>(options =>
           options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
         services.AddScoped<ITrainingFieldRepository, TrainingFieldRepository>();
+        services.AddScoped<ITaskRepository,TaskRepository>();
 
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+
+        services.AddScoped<ISubmissionRepository, SubmissionRepository>();
+        services.AddScoped<ISubmissionService, SubmissionService>();
 
         return services;
     }

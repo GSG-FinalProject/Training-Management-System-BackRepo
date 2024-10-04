@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TMS.Application.Abstracts;
 using TMS.Domain.DTOs.shared;
@@ -17,6 +18,7 @@ namespace TMS.Api.Controllers
         }
 
         [HttpPost("assign")]
+        [Authorize(Roles = "Trainer")]
         public async Task<IActionResult> AssignTrainerToTrainee([FromBody] AssignTrainerTraineeDto assignDto)
         {
             try

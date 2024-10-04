@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using TMS.Api.Responses;
 using TMS.Application.Abstracts;
 using TMS.Domain.DTOs.Course;
@@ -19,6 +20,7 @@ public class CoursesController : ControllerBase
     }
 
     [HttpPost("add")]
+    [Authorize(Roles = "Trainer")]
     public async Task<IActionResult> AddCourse([FromBody] AddCourseRequest request)
     {
         if (request is null)
@@ -61,6 +63,7 @@ public class CoursesController : ControllerBase
     }
 
     [HttpPut("update/{id}")]
+    [Authorize(Roles = "Trainer")]
     public async Task<IActionResult> UpdateCourse(int id, [FromBody] CourseDto request)
     {
         if (request is null)
@@ -84,6 +87,7 @@ public class CoursesController : ControllerBase
     }
 
     [HttpDelete("delete/{id}")]
+    [Authorize(Roles = "Trainer")]
     public async Task<IActionResult> DeleteCourse(int id)
     {
         try

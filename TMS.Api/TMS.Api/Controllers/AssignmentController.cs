@@ -18,7 +18,7 @@ namespace TMS.Api.Controllers
         }
 
         [HttpPost("assign")]
-        [Authorize(Roles = "Trainer")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> AssignTrainerToTrainee([FromBody] AssignTrainerTraineeDto assignDto)
         {
             try

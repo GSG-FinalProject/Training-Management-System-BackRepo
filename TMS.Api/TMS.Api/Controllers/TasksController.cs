@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TMS.Api.Responses;
 using TMS.Application.Abstracts;
@@ -22,6 +23,7 @@ public class TaskController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize(Roles ="Trainer")]
     public async Task<IActionResult> AddAsync(AddTaskRequest taskDto)
     {
         var taskEntity = await _taskService.AddAsync(taskDto);
@@ -37,6 +39,7 @@ public class TaskController : ControllerBase
     }
 
     [HttpDelete("{taskId}")]
+    [Authorize(Roles = "Trainer")]
     public async Task<IActionResult> DeleteAsync(int taskId)
     {
         await _taskService.DeleteAsync(taskId);

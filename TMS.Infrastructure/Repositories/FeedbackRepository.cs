@@ -29,15 +29,16 @@ public class FeedbackRepository : IFeedbackRepository
             await _context.SaveChangesAsync();
         }
     }
-
     public async Task<Feedback> GetByIdAsync(int id)
     {
-        return await _context.Feedbacks.FindAsync(id);
+        return await _context.Feedbacks
+            .Include(f => f.Trainer) 
+            .FirstOrDefaultAsync(f => f.Id == id); 
     }
 
     public async Task<IEnumerable<Feedback>> GetAllAsync()
     {
-        return await _context.Feedbacks.ToListAsync();
+        return await _context.Feedbacks.Include(f => f.Trainer).ToListAsync();
     }
 
     public async Task UpdateAsync(Feedback feedback)

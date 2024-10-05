@@ -88,7 +88,7 @@ public class TrainerController : ControllerBase
         {
             await _unitOfWork.TrainerRepository.DeleteAsync(id);
             await _unitOfWork.CommitAsync();
-            return NoContent();
+            return _responseHandler.Success("Trainer deleted successfully.");
         }
         catch (KeyNotFoundException ex)
         {

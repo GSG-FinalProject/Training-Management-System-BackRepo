@@ -43,7 +43,7 @@ public class TaskController : ControllerBase
     public async Task<IActionResult> DeleteAsync(int taskId)
     {
         await _taskService.DeleteAsync(taskId);
-        return _responseHandler.NoContent("Task deleted successfully.");
+        return _responseHandler.Success("Task deleted successfully.");
     }
 
     [HttpGet("{taskId}")]

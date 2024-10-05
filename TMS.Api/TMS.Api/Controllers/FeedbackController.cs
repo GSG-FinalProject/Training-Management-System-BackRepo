@@ -62,7 +62,8 @@ public class FeedbackController : ControllerBase
         feedbackEntity.Id = id;
 
         await _feedbackRepository.UpdateAsync(feedbackEntity);
-        return _responseHandler.NoContent();
+        return _responseHandler.Success("Update Feedback successfully.");
+
     }
 
     [HttpDelete("{id}")]
@@ -70,6 +71,7 @@ public class FeedbackController : ControllerBase
     public async Task<IActionResult> DeleteFeedback(int id)
     {
         await _feedbackRepository.DeleteAsync(id);
-        return _responseHandler.NoContent();
+        return _responseHandler.Success("FeedBack deleted successfully.");
+
     }
 }

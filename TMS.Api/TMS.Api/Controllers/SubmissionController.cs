@@ -49,7 +49,7 @@ public class SubmissionController : ControllerBase
     public async Task<IActionResult> UpdateSubmission(UpdateSubmissionRequestDto submissionDto)
     {
         await _submissionService.UpdateAsync(submissionDto);
-        return _responseHandler.NoContent("Submission updated successfully.");
+        return _responseHandler.Success("Submission updated successfully.");
     }
 
     [HttpDelete("{id}")]
@@ -57,6 +57,6 @@ public class SubmissionController : ControllerBase
     public async Task<IActionResult> DeleteSubmission(int id)
     {
         await _submissionService.DeleteAsync(id);
-        return _responseHandler.NoContent("Submission deleted successfully.");
+        return _responseHandler.Success("Submission deleted successfully.");
     }
 }

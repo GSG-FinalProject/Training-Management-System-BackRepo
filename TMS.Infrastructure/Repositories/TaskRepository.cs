@@ -49,4 +49,11 @@ public class TaskRepository : ITaskRepository
     {
         return await _context.Tasks.ToListAsync();
     }
+    public async Task<IEnumerable<Domain.Entities.Task>> GetByCourseIdsAsync(List<int> courseIds)
+    {
+        return await _context.Tasks
+            .Where(t => courseIds.Contains(t.CourseId))
+            .ToListAsync();
+    }
+
 }

@@ -7,5 +7,7 @@ public interface ITaskRepository
     System.Threading.Tasks.Task UpdateAsync(Task task);
     System.Threading.Tasks.Task DeleteAsync(int taskId); 
     Task<Task> GetByIdAsync(int taskId); 
-    Task<IEnumerable<Task>> GetAllAsync(); 
+    Task<IEnumerable<Task>> GetAllAsync();
+    Task<IEnumerable<Domain.Entities.Task>> GetByCourseIdsAsync(List<int> courseIds);
+
 }

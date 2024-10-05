@@ -7,4 +7,6 @@ public class Course
     public string Description { get; set; }
     public int TrainingFieldId { get; set; }
     public virtual TrainingField TrainingField { get; set; }
+    public string TrainerId { get; set; }
+    public virtual Trainer Trainer { get; set; }
 }

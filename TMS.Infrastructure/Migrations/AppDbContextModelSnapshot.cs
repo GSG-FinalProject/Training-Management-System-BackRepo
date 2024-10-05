@@ -248,7 +248,7 @@ namespace TMS.Infrastructure.Migrations
 
                     b.HasIndex("TraineeId");
 
-                    b.ToTable("Submissions");
+                    b.ToTable("Submissions", (string)null);
                 });
 
             modelBuilder.Entity("TMS.Domain.Entities.Task", b =>

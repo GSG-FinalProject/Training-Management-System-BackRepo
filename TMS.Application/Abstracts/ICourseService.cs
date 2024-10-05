@@ -1,4 +1,5 @@
 ﻿using TMS.Domain.DTOs.Course;
+using TMS.Domain.Entities;
 namespace TMS.Application.Abstracts;
 public interface ICourseService
 {

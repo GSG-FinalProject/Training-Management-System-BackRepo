@@ -1,7 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using TMS.Domain.Entities;
 using TMS.Domain.Interfaces.Persistence.Repositories;
-using TMS.Api.Responses; 
+using TMS.Api.Responses;
+using AutoMapper;
+using TMS.Domain.DTOs.FeedBack;
+using TMS.Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TMS.Api.Controllers;
 
@@ -11,18 +14,23 @@ public class FeedbackController : ControllerBase
 {
     private readonly IFeedbackRepository _feedbackRepository;
     private readonly IResponseHandler _responseHandler;
+    private readonly IMapper _mapper;
 
-    public FeedbackController(IFeedbackRepository feedbackRepository, IResponseHandler responseHandler)
+    public FeedbackController(IFeedbackRepository feedbackRepository, IResponseHandler responseHandler, IMapper mapper)
     {
         _feedbackRepository = feedbackRepository;
         _responseHandler = responseHandler;
+        _mapper = mapper;
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateFeedback(Feedback feedback)
+    [Authorize(Roles="Trainer")]
+    public async Task<IActionResult> CreateFeedback(CreateFeedbackRequest feedbackDto)
     {
-        var createdFeedback = await _feedbackRepository.AddAsync(feedback);
-        return _responseHandler.Created(createdFeedback);
+        var feedbackEntity = _mapper.Map<Feedback>(feedbackDto);
+        var createdFeedback = await _feedbackRepository.AddAsync(feedbackEntity);
+        var responseDto = _mapper.Map<FeedbackResponseDto>(createdFeedback);
+        return _responseHandler.Created(responseDto);
     }
 
     [HttpGet("{id}")]
@@ -33,32 +41,37 @@ public class FeedbackController : ControllerBase
         {
             return _responseHandler.NotFound($"Feedback with ID {id} not found.");
         }
-        return _responseHandler.Success(feedback);
+
+        var responseDto = _mapper.Map<FeedbackResponseDto>(feedback);
+        return _responseHandler.Success(responseDto);
     }
 
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
         var feedbacks = await _feedbackRepository.GetAllAsync();
-        return _responseHandler.Success(feedbacks);
+        var responseDtos = _mapper.Map<IEnumerable<FeedbackResponseDto>>(feedbacks);
+        return _responseHandler.Success(responseDtos);
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateFeedback(int id, Feedback feedback)
+    [Authorize(Roles = "Trainer")]
+    public async Task<IActionResult> UpdateFeedback(int id, UpdateFeedbackRequest feedbackDto)
     {
-        if (id != feedback.Id)
-        {
-            return _responseHandler.BadRequest("ID mismatch.");
-        }
+        var feedbackEntity = _mapper.Map<Feedback>(feedbackDto);
+        feedbackEntity.Id = id;
 
-        await _feedbackRepository.UpdateAsync(feedback);
-        return _responseHandler.NoContent();
+        await _feedbackRepository.UpdateAsync(feedbackEntity);
+        return _responseHandler.Success("Update Feedback successfully.");
+
     }
 
     [HttpDelete("{id}")]
+    [Authorize(Roles = "Trainer")]
     public async Task<IActionResult> DeleteFeedback(int id)
     {
         await _feedbackRepository.DeleteAsync(id);
-        return _responseHandler.NoContent();
+        return _responseHandler.Success("FeedBack deleted successfully.");
+
     }
 }

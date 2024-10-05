@@ -26,7 +26,7 @@ public class TrainingFieldController : ControllerBase
         {
             return _responseHandler.NotFound("Training field not found.");
         }
-        return _responseHandler.Success(trainingField);
+        return _responseHandler.Success(trainingField, "Return trainingField successfully.");
     }
 
     [HttpPost]
@@ -44,7 +44,7 @@ public class TrainingFieldController : ControllerBase
         try
         {
             await _trainingFieldService.UpdateAsync(id, trainingFieldDto);
-            return _responseHandler.NoContent("Training field updated successfully.");
+            return _responseHandler.Success("Training field updated successfully.");
         }
         catch (KeyNotFoundException)
         {
@@ -59,7 +59,7 @@ public class TrainingFieldController : ControllerBase
         var result = await _trainingFieldService.DeleteAsync(id);
         if (result == "Entity deleted successfully.")
         {
-            return _responseHandler.NoContent("Training field deleted successfully.");
+            return _responseHandler.Success("Training field deleted successfully.");
         }
         return _responseHandler.NotFound("Training field not found.");
     }
@@ -68,6 +68,6 @@ public class TrainingFieldController : ControllerBase
     public async Task<IActionResult> GetAllAsync()
     {
         var trainingFields = await _trainingFieldService.GetAllAsync();
-        return _responseHandler.Success(trainingFields);
+        return _responseHandler.Success(trainingFields, "Return all trainingField successfully.");
     }
 }

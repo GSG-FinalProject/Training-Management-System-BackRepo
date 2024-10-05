@@ -112,9 +112,10 @@ This project is developed by an amazing team :
 
 
 ## 🏅 Acknowledgements
-I extend my sincere gratitude to <a href="https://gazaskygeeks.com/">Gaza sky Geeks </a> for granting me the opportunity to participate in this internship. Their unwavering support has been instrumental throughout the development of this project.
+I extend my sincere gratitude to <a href="https://gazaskygeeks.com/"> Gaza sky Geeks </a> for granting me the opportunity to participate in this internship during the <strong> Market Ready Developer Training program </strong>.
+Their unwavering support has been instrumental throughout the development of this project.
 
-Special thanks to those who provided mentorship, to <strong>Saad Haroub</strong>, <strong>Osaid Makhalfih</strong>, <strong>Amin Eid</strong>, and <strong>Aseel Issa</strong> for their contributions to the success of this project.
+Special thanks to those who provided mentorship to <strong>Saad Haroub</strong>, <strong>Osaid Makhalfih</strong>, <strong>Amin Eid</strong>, and <strong>Aseel Issa</strong> for their contributions to the success of this project. 
 
 <div align="center">
 <img src="https://github.com/user-attachments/assets/3de1ce60-bf1d-4eb1-a688-ea2d8265df03"/>

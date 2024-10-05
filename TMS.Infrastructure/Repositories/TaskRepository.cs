@@ -19,7 +19,6 @@ public class TaskRepository : ITaskRepository
         await _context.SaveChangesAsync();
         return task; 
     }
-
     public async Task UpdateAsync(Domain.Entities.Task task)
     {
         _context.Tasks.Update(task);
@@ -55,5 +54,13 @@ public class TaskRepository : ITaskRepository
             .Where(t => courseIds.Contains(t.CourseId))
             .ToListAsync();
     }
+
+    async Task<IEnumerable<Domain.Entities.Task>> ITaskRepository.GetTasksByTrainerIdAsync(string trainerId)
+    {
+        return await _context.Tasks
+            .Where(task => task.TrainerId == trainerId)
+            .ToListAsync();
+    }
+  
 
 }

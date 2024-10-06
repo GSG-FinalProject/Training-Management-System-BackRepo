@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Moq;
 using TMS.Api.Controllers;
 using TMS.Api.Responses;
+using TMS.Domain.DTOs.shared;
 using TMS.Domain.DTOs.Trainee;
 using TMS.Domain.Entities;
 using TMS.Domain.Interfaces.Persistence;
@@ -52,20 +53,27 @@ public class TraineeControllerTests
     {
         // Arrange
         var traineeId = "1";
-        var trainee = new Trainee { Id = traineeId, FirstName = "leena" };
-        var traineeDto = new TraineeResponseDto { Id = traineeId, FirstName = "leen" };
+        var existingTrainee = new Trainee { Id = traineeId, FirstName = "leena" }; 
+        var updatedTrainee = new Trainee { Id = traineeId, FirstName = "leen" }; 
+        var traineeDto = new TraineeResponseDto { Id = traineeId, FirstName = "leen" }; 
 
-        _unitOfWorkMock.Setup(u => u.TraineeRepository.UpdateAsync(traineeId, trainee)).ReturnsAsync(trainee);
-        _mapperMock.Setup(m => m.Map<TraineeResponseDto>(trainee)).Returns(traineeDto);
+        _unitOfWorkMock.Setup(u => u.TraineeRepository.GetByIdAsync(traineeId)).ReturnsAsync(existingTrainee);
+        _unitOfWorkMock.Setup(u => u.TraineeRepository.UpdateAsync(traineeId, It.IsAny<Trainee>())).ReturnsAsync(updatedTrainee);
+        _mapperMock.Setup(m => m.Map<TraineeResponseDto>(updatedTrainee)).Returns(traineeDto);
         _responseHandlerMock.Setup(r => r.Success(traineeDto, $"Trainee with ID {traineeId} updated successfully."))
             .Returns(new OkObjectResult(traineeDto));
 
         // Act
-        var result = await _controller.UpdateTrainee(traineeId, trainee);
+        var result = await _controller.UpdateTrainee(traineeId, new UpdateUserDto
+        {
+            FirstName = "leen",
+            Email = "leen@example.com", 
+            LastName = "odeh" 
+        });
 
-        // Assert
         result.Should().BeOfType<OkObjectResult>();
         var okResult = result as OkObjectResult;
         okResult.Value.Should().Be(traineeDto);
     }
+
 }

@@ -72,7 +72,7 @@ Ensuring code quality and functionality with comprehensive testing suites using:
 - ##### Fixture: A testing concept used to set up shared contexts for multiple test cases, allowing for efficient and consistent test execution. 🧩
 
 ## Design Patterns
-In the Hotel Booking Platform, several design patterns are employed to ensure a clean, maintainable, and scalable architecture. Here’s a summary of the key patterns used:
+In the TMS Platform, several design patterns are employed to ensure a clean, maintainable, and scalable architecture. Here’s a summary of the key patterns used:
 ### 1. Unit of Work Pattern
 The Unit of Work pattern is used to manage changes to multiple entities in a single transaction. This pattern ensures that changes to the database are handled in a single unit, maintaining data consistency and integrity.
 

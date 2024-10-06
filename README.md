@@ -70,6 +70,7 @@ Ensuring code quality and functionality with comprehensive testing suites using:
 - ##### Moq: A powerful mocking library for .NET that allows creating mock objects for unit testing, enabling isolated and controlled test scenarios. 🧪
 - ##### FluentAssertions: A library that provides a more expressive and readable syntax for assertions, making tests easier to write and understand. 📏
 - ##### Fixture: A testing concept used to set up shared contexts for multiple test cases, allowing for efficient and consistent test execution. 🧩
+<img width="318" alt="Screenshot 2024-10-06 212315" src="https://github.com/user-attachments/assets/ecac663a-bb92-4565-b3b6-8df35cccfdad">
 
 ## Design Patterns
 In the TMS Platform, several design patterns are employed to ensure a clean, maintainable, and scalable architecture. Here’s a summary of the key patterns used:

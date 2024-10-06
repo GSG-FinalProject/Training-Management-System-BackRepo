@@ -2,6 +2,7 @@
 using EntityTask = TMS.Domain.Entities.Task; 
 
 namespace TMS.Application.Abstracts;
+
 public interface ITaskService
 {
     Task<EntityTask> AddAsync(AddTaskRequest taskDto);

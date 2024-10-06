@@ -20,7 +20,7 @@ public class SubmissionService : ISubmissionService
     public async Task<SubmissionResponseDto> AddAsync(AddSubmissionRequestDto submissionDto)
     {
         var submission = _mapper.Map<Submission>(submissionDto);
-        var createdSubmission = await _submissionRepository.AddAsync(submission);
+        var createdSubmission = await _submissionRepository.CreateAsync(submission);
         return _mapper.Map<SubmissionResponseDto>(createdSubmission);
     }
 
@@ -44,6 +44,6 @@ public class SubmissionService : ISubmissionService
     public async Task UpdateAsync(UpdateSubmissionRequestDto submissionDto)
     {
         var submission = _mapper.Map<Submission>(submissionDto);
-        await _submissionRepository.UpdateAsync(submission);
+        await _submissionRepository.UpdateAsync(submissionDto.Id,submission);
     }
 }

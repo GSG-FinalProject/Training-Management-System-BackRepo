@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TMS.Api.Responses;
 using TMS.Application.Abstracts;
@@ -12,38 +11,51 @@ namespace TMS.API.Controllers;
 public class TaskController : ControllerBase
 {
     private readonly ITaskService _taskService;
-    private readonly IResponseHandler _responseHandler; 
-    public IMapper _mapper { get; set; }
+    private readonly IResponseHandler _responseHandler;
+    private readonly IMapper _mapper;
 
-    public TaskController(ITaskService taskService, IResponseHandler responseHandler,IMapper mapper)
+    public TaskController(ITaskService taskService, IResponseHandler responseHandler, IMapper mapper)
     {
         _taskService = taskService;
-        _responseHandler = responseHandler; 
+        _responseHandler = responseHandler;
         _mapper = mapper;
     }
 
     [HttpPost]
-    [Authorize(Roles ="Trainer")]
-    public async Task<IActionResult> AddAsync(AddTaskRequest taskDto)
+    public async Task<IActionResult> AddAsync([FromBody] AddTaskRequest taskDto)
     {
-        var taskEntity = await _taskService.AddAsync(taskDto);
-        var responseDto = _mapper.Map<TaskResponseDto>(taskEntity);
-        return _responseHandler.Created(responseDto, "Task created successfully.");
+        try
+        {
+            var taskEntity = await _taskService.AddAsync(taskDto);
+            var responseDto = _mapper.Map<TaskResponseDto>(taskEntity);
+            return _responseHandler.Created(responseDto, "Task created successfully.");
+        }
+        catch (Exception ex)
+        {
+            return _responseHandler.BadRequest("An error occurred while creating the task: " + ex.Message);
+        }
     }
 
+
     [HttpPut("{taskId}")]
-    public async Task<IActionResult> UpdateAsync(int taskId, UpdateTaskRequest taskDto)
+    public async Task<IActionResult> UpdateAsync(int taskId, [FromBody] UpdateTaskRequest taskDto)
     {
-        await _taskService.UpdateAsync(taskDto);
-        return _responseHandler.NoContent("Task updated successfully.");
+        try
+        {
+            await _taskService.UpdateAsync(taskDto);
+            return _responseHandler.NoContent("Task updated successfully.");
+        }
+        catch (Exception ex)
+        {
+            return _responseHandler.BadRequest("An error occurred while updating the task.");
+        }
     }
 
     [HttpDelete("{taskId}")]
-    [Authorize(Roles = "Trainer")]
     public async Task<IActionResult> DeleteAsync(int taskId)
     {
         await _taskService.DeleteAsync(taskId);
-        return _responseHandler.Success("Task deleted successfully.");
+        return _responseHandler.NoContent("Task deleted successfully.");
     }
 
     [HttpGet("{taskId}")]
@@ -65,4 +77,3 @@ public class TaskController : ControllerBase
         return _responseHandler.Success(tasks);
     }
 }
-

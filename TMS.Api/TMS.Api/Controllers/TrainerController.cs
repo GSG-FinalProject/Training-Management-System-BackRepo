@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using TMS.Api.Responses;
+using TMS.Domain.DTOs.shared;
 using TMS.Domain.DTOs.Trainer;
 using TMS.Domain.Entities;
 using TMS.Domain.Interfaces.Persistence;
@@ -57,7 +58,7 @@ public class TrainerController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateTrainer(string id, [FromBody] Trainer trainer)
+    public async Task<IActionResult> UpdateTrainer(string id, [FromBody] UpdateUserDto trainerDto)
     {
         if (!ModelState.IsValid)
         {
@@ -66,10 +67,20 @@ public class TrainerController : ControllerBase
 
         try
         {
-            var updatedTrainer = await _unitOfWork.TrainerRepository.UpdateAsync(id, trainer);
-            var trainerDto = _mapper.Map<TrainerResponseDto>(updatedTrainer);
+            var existingTrainer = await _unitOfWork.TrainerRepository.GetByIdAsync(id);
+            if (existingTrainer is null)
+            {
+                return _responseHandler.NotFound($"Trainer with ID {id} not found.");
+            }
+
+            existingTrainer.Email = trainerDto.Email;
+            existingTrainer.FirstName = trainerDto.FirstName;
+            existingTrainer.LastName = trainerDto.LastName;
+
             await _unitOfWork.CommitAsync();
-            return _responseHandler.Success(trainerDto, $"Trainer with ID {id} updated successfully.");
+
+            var trainerResponseDto = _mapper.Map<TrainerResponseDto>(existingTrainer);
+            return _responseHandler.Success(trainerResponseDto, $"Trainer with ID {id} updated successfully.");
         }
         catch (KeyNotFoundException ex)
         {

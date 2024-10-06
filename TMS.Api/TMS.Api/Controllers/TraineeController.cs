@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using TMS.Api.Responses;
+using TMS.Domain.DTOs.shared;
 using TMS.Domain.DTOs.Trainee;
 using TMS.Domain.Entities;
 using TMS.Domain.Interfaces.Persistence;
@@ -57,7 +58,7 @@ namespace TMS.Api.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateTrainee(string id, [FromBody] Trainee trainee)
+        public async Task<IActionResult> UpdateTrainee(string id, [FromBody] UpdateUserDto updateUserDto)
         {
             if (!ModelState.IsValid)
             {
@@ -66,6 +67,8 @@ namespace TMS.Api.Controllers
 
             try
             {
+                var trainee = _mapper.Map<Trainee>(updateUserDto);
+
                 var updatedTrainee = await _unitOfWork.TraineeRepository.UpdateAsync(id, trainee);
                 var traineeDto = _mapper.Map<TraineeResponseDto>(updatedTrainee);
                 await _unitOfWork.CommitAsync();

@@ -30,7 +30,9 @@ public class UsersController : ControllerBase
                 u.Id,
                 u.Email,
                 u.UserName,
-                u.UserType
+                u.UserType,
+                u.FirstName,
+                u.LastName
             }).ToListAsync();
 
             return _responseHandler.Success(users, "Users retrieved successfully.");
@@ -57,7 +59,9 @@ public class UsersController : ControllerBase
                 user.Id,
                 user.Email,
                 user.UserName,
-                user.UserType
+                user.UserType,
+                user.FirstName,
+                user.LastName
             };
 
             return _responseHandler.Success(userData, "User retrieved successfully.");

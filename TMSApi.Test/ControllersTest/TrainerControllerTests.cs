@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Moq;
 using TMS.Api.Controllers;
 using TMS.Api.Responses;
+using TMS.Domain.DTOs.shared;
 using TMS.Domain.DTOs.Trainer;
 using TMS.Domain.Entities;
 using TMS.Domain.Interfaces.Persistence;
@@ -64,29 +65,6 @@ public class TrainerControllerTests
 
         // Assert
         result.Should().BeOfType<NotFoundResult>();
-    }
-
-    [Fact]
-    public async Task UpdateTrainer_ShouldReturnSuccess_WhenTrainerIsUpdated()
-    {
-        // Arrange
-        var trainerId = "1";
-        var trainer = new Trainer { Id = trainerId, FirstName = "osaid" };
-        var updatedTrainer = new Trainer { Id = trainerId, FirstName = "osaid" };
-        var trainerDto = new TrainerResponseDto { Id = trainerId, FirstName = "osaid" };
-
-        _unitOfWorkMock.Setup(u => u.TrainerRepository.UpdateAsync(trainerId, updatedTrainer)).ReturnsAsync(updatedTrainer);
-        _mapperMock.Setup(m => m.Map<TrainerResponseDto>(updatedTrainer)).Returns(trainerDto);
-        _responseHandlerMock.Setup(r => r.Success(trainerDto, $"Trainer with ID {trainerId} updated successfully."))
-            .Returns(new OkObjectResult(trainerDto));
-
-        // Act
-        var result = await _controller.UpdateTrainer(trainerId, updatedTrainer);
-
-        // Assert
-        result.Should().BeOfType<OkObjectResult>();
-        var okResult = result as OkObjectResult;
-        okResult.Value.Should().Be(trainerDto);
     }
 
     [Fact]

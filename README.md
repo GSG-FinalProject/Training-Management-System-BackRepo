@@ -6,7 +6,7 @@
 This system aims to enhance training management and communication between trainers and trainees within the company. It includes multiple interfaces to meet the needs of different users, such as trainers, trainees, and administrative supervisors (admins). The system features an easy-to-use interface and advanced functionalities to ensure a smooth and effective training experience.
 
 ## 🗂 Database Schema Design
-<img width="794" alt="DbSchema" src="https://github.com/user-attachments/assets/0857dbe2-167d-4940-bf3d-5f3ef463aa77">
+<img width="923" alt="db" src="https://github.com/user-attachments/assets/11e1b4c1-e4f3-4bd8-9b0e-831cb548f344">
 
 ## Key Features 🌟
 ### 1. Admin Interface (Admin _ Team Lead)

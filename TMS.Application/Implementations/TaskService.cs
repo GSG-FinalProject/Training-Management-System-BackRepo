@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using TMS.Application.Abstracts;
 using TMS.Domain.DTOs.Task;
+using TMS.Domain.Entities;
 using TMS.Domain.Interfaces.Persistence.Repositories;
 using EntityTask = TMS.Domain.Entities.Task; 
 
@@ -20,14 +21,13 @@ public class TaskService : ITaskService
     public async Task<EntityTask> AddAsync(AddTaskRequest taskDto)
     {
         var taskEntity = _mapper.Map<EntityTask>(taskDto);
-        return await _taskRepository.AddAsync(taskEntity);
+        return await _taskRepository.CreateAsync(taskEntity);
     }
 
     public async System.Threading.Tasks.Task UpdateAsync(UpdateTaskRequest taskDto)
     {
-        
         var taskEntity = _mapper.Map<EntityTask>(taskDto);
-        await _taskRepository.UpdateAsync(taskEntity);
+        await _taskRepository.UpdateAsync(taskDto.ID,taskEntity);
     }
 
     public async System.Threading.Tasks.Task DeleteAsync(int taskId)

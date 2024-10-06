@@ -1,4 +1,5 @@
-﻿using TMS.Domain.Interfaces.Persistence.Repositories;
+﻿using TMS.Domain.Entities;
+using TMS.Domain.Interfaces.Persistence.Repositories;
 
 namespace TMS.Domain.Interfaces.Persistence;
 

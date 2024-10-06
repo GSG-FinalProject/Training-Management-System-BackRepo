@@ -62,6 +62,25 @@ public class CoursesController : ControllerBase
         }
     }
 
+    [HttpGet]
+    public async Task<IActionResult> GetAllCourse()
+    {
+        try
+        {
+            var course = await _courseService.GetAllCoursesAsync();
+            if (course is null)
+            {
+                return _responseHandler.NotFound("Courses not found.");
+            }
+
+            return _responseHandler.Success(course, "Courses retrieved successfully.");
+        }
+        catch (Exception ex)
+        {
+            return _responseHandler.UnprocessableEntity($"An error occurred: {ex.Message}");
+        }
+    }
+
     [HttpPut("update/{id}")]
     [Authorize(Roles = "Trainer")]
     public async Task<IActionResult> UpdateCourse(int id, [FromBody] CourseDto request)

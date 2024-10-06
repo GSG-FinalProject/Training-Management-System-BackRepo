@@ -1,6 +1,7 @@
 ﻿using TMS.Application.Abstracts;
 using TMS.Domain.DTOs.TrainingField;
 using TMS.Domain.Entities;
+using TMS.Domain.Interfaces.Persistence;
 using TMS.Domain.Interfaces.Persistence.Repositories;
 using Task = System.Threading.Tasks.Task;
 

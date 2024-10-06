@@ -1,8 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
 using TMS.Api.Responses;
-using TMS.Domain.DTOs.Task;
 using TMS.Domain.DTOs.Trainer;
 using TMS.Domain.Entities;
 using TMS.Domain.Interfaces.Persistence;
@@ -90,7 +88,7 @@ public class TrainerController : ControllerBase
         {
             await _unitOfWork.TrainerRepository.DeleteAsync(id);
             await _unitOfWork.CommitAsync();
-            return _responseHandler.Success("Trainer deleted successfully.");
+            return NoContent();
         }
         catch (KeyNotFoundException ex)
         {
@@ -101,29 +99,4 @@ public class TrainerController : ControllerBase
             return _responseHandler.BadRequest(ex.Message);
         }
     }
-
-    [HttpGet("my-tasks")]
-    public async Task<IActionResult> GetTasksForLoggedTrainer()
-    {
-        try
-        {
-            var loggedTrainerId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-
-            if (loggedTrainerId == null)
-            {
-                return _responseHandler.Unauthorized("You are not authorized.");
-            }
-
-            var tasks = await _unitOfWork.TasksRepository.GetTasksByTrainerIdAsync(loggedTrainerId);
-            var taskDtos = _mapper.Map<IEnumerable<TaskResponseDto>>(tasks);
-
-            return _responseHandler.Success(taskDtos, "Tasks retrieved successfully.");
-        }
-        catch (Exception ex)
-        {
-            return _responseHandler.BadRequest(ex.Message);
-        }
-    }
-
-
 }

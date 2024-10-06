@@ -8,6 +8,4 @@ public class Task
     public Course Course { get; set; }
     public int CourseId { get; set; }
     public ICollection<Submission> Submissions { get; set; }
-    public string TrainerId { get; set; } 
-    public Trainer Trainer { get; set; }
 }

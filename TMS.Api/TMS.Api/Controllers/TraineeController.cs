@@ -4,98 +4,100 @@ using TMS.Api.Responses;
 using TMS.Domain.DTOs.Trainee;
 using TMS.Domain.Entities;
 using TMS.Domain.Interfaces.Persistence;
-namespace TMS.Api.Controllers;
 
-[Route("api/[controller]")]
-[ApiController]
-public class TraineeController : ControllerBase
+namespace TMS.Api.Controllers
 {
-    private readonly IUnitOfWork _unitOfWork;
-    private readonly IResponseHandler _responseHandler;
-    private readonly IMapper _mapper;
-
-    public TraineeController(IUnitOfWork unitOfWork, IResponseHandler responseHandler, IMapper mapper)
+    [Route("api/[controller]")]
+    [ApiController]
+    public class TraineeController : ControllerBase
     {
-        _unitOfWork = unitOfWork;
-        _responseHandler = responseHandler;
-        _mapper = mapper;
-    }
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IResponseHandler _responseHandler;
+        private readonly IMapper _mapper;
 
-    [HttpGet]
-    public async Task<IActionResult> GetAllTrainees()
-    {
-        try
+        public TraineeController(IUnitOfWork unitOfWork, IResponseHandler responseHandler, IMapper mapper)
         {
-            var trainees = await _unitOfWork.TraineeRepository.GetAllAsync();
-            var traineeDtos = _mapper.Map<IEnumerable<TraineeResponseDto>>(trainees);
-            return _responseHandler.Success(traineeDtos, "Trainees retrieved successfully.");
+            _unitOfWork = unitOfWork;
+            _responseHandler = responseHandler;
+            _mapper = mapper;
         }
-        catch (Exception ex)
-        {
-            return _responseHandler.BadRequest(ex.Message);
-        }
-    }
 
-    [HttpGet("{id}")]
-    public async Task<IActionResult> GetTraineeById(string id)
-    {
-        try
+        [HttpGet]
+        public async Task<IActionResult> GetAllTrainees()
         {
-            var trainee = await _unitOfWork.TraineeRepository.GetByIdAsync(id);
-            if (trainee is null)
+            try
             {
-                return _responseHandler.NotFound("Trainee not found.");
+                var trainees = await _unitOfWork.TraineeRepository.GetAllAsync();
+                var traineeDtos = _mapper.Map<IEnumerable<TraineeResponseDto>>(trainees);
+                return _responseHandler.Success(traineeDtos, "Trainees retrieved successfully.");
             }
-            var traineeDto = _mapper.Map<TraineeResponseDto>(trainee);
-            return _responseHandler.Success(traineeDto, $"Trainee with ID {id} retrieved successfully.");
-        }
-        catch (Exception ex)
-        {
-            return _responseHandler.BadRequest(ex.Message);
-        }
-    }
-
-    [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateTrainee(string id, [FromBody] Trainee trainee)
-    {
-        if (!ModelState.IsValid)
-        {
-            return _responseHandler.BadRequest("Invalid input data.");
+            catch (Exception ex)
+            {
+                return _responseHandler.BadRequest(ex.Message);
+            }
         }
 
-        try
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetTraineeById(string id)
         {
-            var updatedTrainee = await _unitOfWork.TraineeRepository.UpdateAsync(id, trainee);
-            var traineeDto = _mapper.Map<TraineeResponseDto>(updatedTrainee);
-            await _unitOfWork.CommitAsync();
-            return _responseHandler.Success(traineeDto, $"Trainee with ID {id} updated successfully.");
+            try
+            {
+                var trainee = await _unitOfWork.TraineeRepository.GetByIdAsync(id);
+                if (trainee is null)
+                {
+                    return _responseHandler.NotFound("Trainee not found.");
+                }
+                var traineeDto = _mapper.Map<TraineeResponseDto>(trainee);
+                return _responseHandler.Success(traineeDto, $"Trainee with ID {id} retrieved successfully.");
+            }
+            catch (Exception ex)
+            {
+                return _responseHandler.BadRequest(ex.Message);
+            }
         }
-        catch (KeyNotFoundException ex)
-        {
-            return _responseHandler.NotFound(ex.Message);
-        }
-        catch (Exception ex)
-        {
-            return _responseHandler.BadRequest(ex.Message);
-        }
-    }
 
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteTrainee(string id)
-    {
-        try
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateTrainee(string id, [FromBody] Trainee trainee)
         {
-            await _unitOfWork.TraineeRepository.DeleteAsync(id);
-            await _unitOfWork.CommitAsync();
-            return _responseHandler.Success("Trainee deleted successfully.");
+            if (!ModelState.IsValid)
+            {
+                return _responseHandler.BadRequest("Invalid input data.");
+            }
+
+            try
+            {
+                var updatedTrainee = await _unitOfWork.TraineeRepository.UpdateAsync(id, trainee);
+                var traineeDto = _mapper.Map<TraineeResponseDto>(updatedTrainee);
+                await _unitOfWork.CommitAsync();
+                return _responseHandler.Success(traineeDto, $"Trainee with ID {id} updated successfully.");
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return _responseHandler.NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return _responseHandler.BadRequest(ex.Message);
+            }
         }
-        catch (KeyNotFoundException ex)
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteTrainee(string id)
         {
-            return _responseHandler.NotFound(ex.Message);
-        }
-        catch (Exception ex)
-        {
-            return _responseHandler.BadRequest(ex.Message);
+            try
+            {
+                await _unitOfWork.TraineeRepository.DeleteAsync(id);
+                await _unitOfWork.CommitAsync();
+                return NoContent();
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return _responseHandler.NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return _responseHandler.BadRequest(ex.Message);
+            }
         }
     }
 }

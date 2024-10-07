@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TMS.Api.Responses;
 using TMS.Application.Abstracts;
 using TMS.Domain.DTOs.Task;
-
 namespace TMS.API.Controllers;
 
 [ApiController]
@@ -22,6 +22,7 @@ public class TaskController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize(Roles = "Trainer")]
     public async Task<IActionResult> AddAsync([FromBody] AddTaskRequest taskDto)
     {
         try
@@ -38,6 +39,7 @@ public class TaskController : ControllerBase
 
 
     [HttpPut("{taskId}")]
+    [Authorize(Roles = "Trainer")]
     public async Task<IActionResult> UpdateAsync(int taskId, [FromBody] UpdateTaskRequest taskDto)
     {
         try
@@ -52,6 +54,7 @@ public class TaskController : ControllerBase
     }
 
     [HttpDelete("{taskId}")]
+    [Authorize(Roles = "Trainer")]
     public async Task<IActionResult> DeleteAsync(int taskId)
     {
         await _taskService.DeleteAsync(taskId);

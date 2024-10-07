@@ -1,9 +1,8 @@
 ﻿namespace TMS.Domain.DTOs.shared;
-public class UpdateUserDto
+public class UpdateTraineeDto
 {
     public string Email { get; set; }
     public string FirstName { get; set; }
     public string LastName { get; set; }
-    public int? TrainingFieldId { get; set; }
-    public string Bio { get; set; }
+    public string TrainerId { get; set; } 
 }

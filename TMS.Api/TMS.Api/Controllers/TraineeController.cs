@@ -58,7 +58,7 @@ namespace TMS.Api.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateTrainee(string id, [FromBody] UpdateUserDto updateUserDto)
+        public async Task<IActionResult> UpdateTrainee(string id, [FromBody] UpdateTraineeDto updateUserDto)
         {
             if (!ModelState.IsValid)
             {
@@ -67,11 +67,30 @@ namespace TMS.Api.Controllers
 
             try
             {
-                var trainee = _mapper.Map<Trainee>(updateUserDto);
+                var existingTrainee = await _unitOfWork.TraineeRepository.GetByIdAsync(id);
+                if (existingTrainee == null)
+                {
+                    return _responseHandler.NotFound($"Trainee with ID {id} not found.");
+                }
 
-                var updatedTrainee = await _unitOfWork.TraineeRepository.UpdateAsync(id, trainee);
-                var traineeDto = _mapper.Map<TraineeResponseDto>(updatedTrainee);
+                existingTrainee.Email = updateUserDto.Email;
+                existingTrainee.FirstName = updateUserDto.FirstName;
+                existingTrainee.LastName = updateUserDto.LastName;
+
+                if (!string.IsNullOrEmpty(updateUserDto.TrainerId))
+                {
+                    var trainer = await _unitOfWork.TrainerRepository.GetByIdAsync(updateUserDto.TrainerId);
+                    if (trainer == null)
+                    {
+                        return _responseHandler.NotFound($"Trainer with ID {updateUserDto.TrainerId} not found.");
+                    }
+
+                    existingTrainee.TrainerId = updateUserDto.TrainerId;
+                }
+
                 await _unitOfWork.CommitAsync();
+
+                var traineeDto = _mapper.Map<TraineeResponseDto>(existingTrainee);
                 return _responseHandler.Success(traineeDto, $"Trainee with ID {id} updated successfully.");
             }
             catch (KeyNotFoundException ex)
@@ -83,6 +102,7 @@ namespace TMS.Api.Controllers
                 return _responseHandler.BadRequest(ex.Message);
             }
         }
+
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTrainee(string id)

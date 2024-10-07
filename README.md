@@ -111,6 +111,10 @@ This project is developed by an amazing team :
 - <a href="https://github.com/talamahmoud">Tala Mahmoud</a>
 - <a href="https://github.com/LayanAlfar0">Layan Alfar</a>
 
+## 📈 Proposal Document
+You can view the proposal document 
+
+[Market Ready Developer Training Program.pdf](https://github.com/user-attachments/files/17284392/Market.Ready.Developer.Training.Program.pdf)
 
 ## 🏅 Acknowledgements
 I extend my sincere gratitude to <a href="https://gazaskygeeks.com/"> Gaza sky Geeks </a> for granting me the opportunity to participate in this internship during the <strong> Market Ready Developer Training program </strong>.

@@ -21,7 +21,6 @@ public class CourseService : ICourseService
         {
             Name = request.Name,
             Description = request.Description,
-
             ResoursesUrl = request.ResoursesUrl,
             TrainingFieldId = request.TrainingFieldId
         };

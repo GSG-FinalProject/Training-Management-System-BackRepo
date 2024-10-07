@@ -73,6 +73,7 @@ namespace TMS.Api.Controllers
                     return _responseHandler.NotFound($"Trainee with ID {id} not found.");
                 }
 
+                // تحديث خصائص المتدرب
                 existingTrainee.Email = updateUserDto.Email;
                 existingTrainee.FirstName = updateUserDto.FirstName;
                 existingTrainee.LastName = updateUserDto.LastName;

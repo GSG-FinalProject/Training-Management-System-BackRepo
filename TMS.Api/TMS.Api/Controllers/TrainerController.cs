@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using TMS.Api.Responses;
 using TMS.Domain.DTOs.shared;
 using TMS.Domain.DTOs.Trainer;
-using TMS.Domain.Entities;
 using TMS.Domain.Interfaces.Persistence;
 
 namespace TMS.Api.Controllers;
@@ -76,6 +75,18 @@ public class TrainerController : ControllerBase
             existingTrainer.Email = trainerDto.Email;
             existingTrainer.FirstName = trainerDto.FirstName;
             existingTrainer.LastName = trainerDto.LastName;
+            existingTrainer.Bio=trainerDto.Bio;
+
+            if (trainerDto.TrainingFieldId.HasValue)
+            {
+                var trainingField = await _unitOfWork.TrainingFieldRepository.GetByIdAsync(trainerDto.TrainingFieldId.Value);
+                if (trainingField is null)
+                {
+                    return _responseHandler.NotFound($"TrainingField with ID {trainerDto.TrainingFieldId} not found.");
+                }
+
+                existingTrainer.TrainingFieldId = trainerDto.TrainingFieldId.Value; 
+            }
 
             await _unitOfWork.CommitAsync();
 
@@ -91,6 +102,8 @@ public class TrainerController : ControllerBase
             return _responseHandler.BadRequest(ex.Message);
         }
     }
+
+
 
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteTrainer(string id)

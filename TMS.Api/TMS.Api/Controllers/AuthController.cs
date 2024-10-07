@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TMS.Api.Responses;
 using TMS.Application.Abstracts.IAuthService;
@@ -44,7 +45,7 @@ public class AuthController : ControllerBase
 
 
     [HttpPost("register/trainer")]
-   // [Authorize(Roles ="Admin")]
+    [Authorize(Roles ="Admin")]
     public async Task<IActionResult> RegisterTrainer([FromBody] RegisterTrainerDto registerTrainerDto)
     {
         try
@@ -65,7 +66,7 @@ public class AuthController : ControllerBase
 
 
     [HttpPost("register/trainee")]
-   // [Authorize(Roles ="Admin")]
+    [Authorize(Roles ="Admin")]
     public async Task<IActionResult> RegisterTrainee([FromBody] RegisterTraineeDto registerTraineeDto)
     {
         try

@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TMS.Api.Responses;
 using TMS.Application.Abstracts;
 using TMS.Domain.DTOs.Task;
-
+using TMS.Domain.Entities;
+using Task = TMS.Domain.Entities.Task;
 namespace TMS.API.Controllers;
 
 [ApiController]
@@ -22,6 +24,7 @@ public class TaskController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize(Roles = "Trainer")]
     public async Task<IActionResult> AddAsync([FromBody] AddTaskRequest taskDto)
     {
         try
@@ -35,23 +38,29 @@ public class TaskController : ControllerBase
             return _responseHandler.BadRequest("An error occurred while creating the task: " + ex.Message);
         }
     }
-
-
     [HttpPut("{taskId}")]
-    public async Task<IActionResult> UpdateAsync(int taskId, [FromBody] UpdateTaskRequest taskDto)
+    [Authorize (Roles="Trainer")]
+    public async Task<IActionResult> UpdateAsync(int taskId, [FromBody] AddTaskRequest taskDto)
     {
         try
         {
-            await _taskService.UpdateAsync(taskDto);
-            return _responseHandler.NoContent("Task updated successfully.");
+            await _taskService.UpdateAsync(taskId, taskDto);
+            return _responseHandler.Success("Updated done."); 
+        }
+        catch (KeyNotFoundException ex)
+        {
+            return NotFound(ex.Message); 
         }
         catch (Exception ex)
         {
-            return _responseHandler.BadRequest("An error occurred while updating the task.");
+            return BadRequest("An error occurred while updating the task: " + ex.Message); 
         }
     }
 
+
+
     [HttpDelete("{taskId}")]
+    [Authorize(Roles = "Trainer")]
     public async Task<IActionResult> DeleteAsync(int taskId)
     {
         await _taskService.DeleteAsync(taskId);

@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using Moq;
 using TMS.Api.Controllers;
 using TMS.Api.Responses;
-using TMS.Domain.DTOs.shared;
 using TMS.Domain.DTOs.Trainer;
 using TMS.Domain.Entities;
 using TMS.Domain.Interfaces.Persistence;
@@ -66,6 +65,7 @@ public class TrainerControllerTests
         // Assert
         result.Should().BeOfType<NotFoundResult>();
     }
+
 
     [Fact]
     public async Task DeleteTrainer_ShouldReturnNoContent_WhenTrainerIsDeleted()
